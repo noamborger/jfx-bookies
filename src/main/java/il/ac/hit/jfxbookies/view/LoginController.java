@@ -1,38 +1,39 @@
 package il.ac.hit.jfxbookies.view;
 
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.table.TableUtils;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
-import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.BorrowBook;
-import il.ac.hit.jfxbookies.person.Client;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage
-import javafx.stage.Window
-import lombok.extern.java.Log;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Objects;
 
-public class HelloController {
+public class LoginController {
     @FXML
     private Label responseText;
     @FXML
     Button Login;
     @FXML
-    protected void onHelloButtonClick() {
+    protected void onHelloButtonClick(ActionEvent event) {
         //welcomeText.setText("Welcome to JavaFX Application!");
+        /*
         responseText.setText("Username/Password incorrect");
+
         try {
             Calendar id = JdbcDriverSetup.getLookup(BorrowBook.class).queryForEq("id", 1).get(0).getDate();
 
             System.out.println(id.get(Calendar.DAY_OF_MONTH) + "/" + (id.get(Calendar.MONTH) + 1) + "/" + id.get(Calendar.YEAR));
-            /*
+
             Book book = JdbcDriverSetup.getLookup(Book.class).queryForEq("title", "Lior").get(0);
             String id = "3333333";
             Client client = Client.builder()
@@ -50,16 +51,28 @@ public class HelloController {
                     .book(book)
                     .build();
             JdbcDriverSetup.getCreate(BorrowBook.class).create(borrowbook);
+             }catch (SQLException e) {
+            System.err.println("error");
+            e.printStackTrace();
             */
-        } catch (SQLException e) {
+        try{
+            /*Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
+            Stage window = (Stage) Login.getScene().getWindow();
+            window.setScene(new Scene(root));*/
+            Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
+            Scene booksListScene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(booksListScene);
+            window.show();
+
+
+        } catch (IOException e) {
             System.err.println("error");
             e.printStackTrace();
         }
-    }
-    public void handleLoginButton() throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main-view.fxml"));
 
-        Stage window = (Stage) Login.getScene().getWindow();
-        window.setScene(new Scene(root, 500,400));
+
     }
+
+
 }

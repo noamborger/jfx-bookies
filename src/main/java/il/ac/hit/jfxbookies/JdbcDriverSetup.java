@@ -1,5 +1,6 @@
 package il.ac.hit.jfxbookies;
 
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
@@ -24,6 +25,14 @@ public class JdbcDriverSetup {
             return connectionSource;
         }
 
+    }
+
+    public static <D extends Dao<T, ?>, T> D getLookup(Class<T> clazz) {
+        return DaoManager.lookupDao(JdbcDriverSetup.getConnection(), clazz);
+    }
+
+    public static <T> void createDao(Class<T> clazz) throws SQLException {
+        DaoManager.createDao(getConnection(), clazz);
     }
 
 }

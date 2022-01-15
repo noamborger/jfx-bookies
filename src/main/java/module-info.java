@@ -14,5 +14,11 @@ module il.ac.hit.jfxbookies {
     exports il.ac.hit.jfxbookies;
     exports il.ac.hit.jfxbookies.library.book to ormlite.jdbc;
     opens il.ac.hit.jfxbookies.library.book to ormlite.jdbc;
+    exports il.ac.hit.jfxbookies.library.managing to ormlite.jdbc;
+    opens il.ac.hit.jfxbookies.library.managing to ormlite.jdbc;
+    exports il.ac.hit.jfxbookies.person to ormlite.jdbc;
+    opens il.ac.hit.jfxbookies.person to ormlite.jdbc;
+    exports il.ac.hit.jfxbookies.view;
+    opens il.ac.hit.jfxbookies.view to javafx.fxml;
 
 }

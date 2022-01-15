@@ -22,10 +22,6 @@ public class Book {
     private String genre;
     @DatabaseField
     private String location;
- //   @DatabaseField(foreign = true)
-    private BorrowBook borrowBook = null;
-    @DatabaseField(columnName = "is_borrowed", dataType = DataType.BOOLEAN_INTEGER)
-    private boolean isBorrowed = false;
 
     //Constructors
     @Builder
