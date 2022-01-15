@@ -1,2 +1,4 @@
-package il.ac.hit.jfxbookies.view;public class AddClientController {
+package il.ac.hit.jfxbookies.view;
+
+public class AddClientController {
 }

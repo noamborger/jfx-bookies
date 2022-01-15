@@ -1,2 +1,4 @@
-package il.ac.hit.jfxbookies.view;public class infoBookController {
+package il.ac.hit.jfxbookies.view;
+
+public class InfoBookController {
 }
