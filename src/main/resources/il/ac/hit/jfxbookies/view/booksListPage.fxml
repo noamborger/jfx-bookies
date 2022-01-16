@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" fx:controller="il.ac.hit.jfxbookies.view.BooksListController" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.BooksListController">
    <children>
       <Label layoutX="70.0" layoutY="60.0" text="Search Book:" />
       <TableView fx:id="dataTable" layoutX="62.0" layoutY="100.0" prefHeight="350.0" prefWidth="800.0">
@@ -20,8 +20,7 @@
         </columns>
       </TableView>
       <TextField layoutX="144.0" layoutY="56.0" prefHeight="25.0" prefWidth="577.0" />
-      <Button layoutX="817.0" layoutY="14.0" mnemonicParsing="false" text="Add Book" />
-      <Button layoutX="750.0" layoutY="14.0" mnemonicParsing="false" text="Client" />
-      <Button layoutX="648.0" layoutY="14.0" mnemonicParsing="false" text="Clients" />
+      <Button fx:id="addBookButton" layoutX="817.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAddBookButtonClick" text="Add Book" />
+      <Button fx:id="clientButton" layoutX="750.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClientButtonClick" text="Client" />
    </children>
 </Pane>

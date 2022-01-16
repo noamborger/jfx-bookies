@@ -30,12 +30,13 @@ public class LoginController {
 
     @FXML
     private Button loginButton;
-
+/*
     public void initialize() {
         // if user.getUserType() != MANAGER
 
         loginButton.setVisible(false);
     }
+*/
 
     @FXML
     protected void onLoginButtonClick(ActionEvent event) {
