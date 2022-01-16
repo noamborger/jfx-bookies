@@ -1,8 +1,8 @@
 package il.ac.hit.jfxbookies.view;
 
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
-import il.ac.hit.jfxbookies.library.managing.BorrowBook;
-import javafx.application.Application;
+import il.ac.hit.jfxbookies.person.User;
+import il.ac.hit.jfxbookies.session.SessionContext;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,21 +10,51 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Objects;
+import java.util.List;
 
 public class LoginController {
     @FXML
     private Label responseText;
     @FXML
-    Button Login;
+    private TextField username;
     @FXML
-    protected void onHelloButtonClick(ActionEvent event) {
+    private PasswordField password;
+
+    @FXML
+    private Button loginButton;
+
+    public void initialize() {
+        // if user.getUserType() != MANAGER
+
+        loginButton.setVisible(false);
+    }
+
+    @FXML
+    protected void onLoginButtonClick(ActionEvent event) {
+        try {
+            List<User> result = JdbcDriverSetup.getLookup(User.class).queryBuilder()
+                    .where()
+                    .eq("username", username.getText())
+                    .and()
+                    .eq("password", DigestUtils.sha512Hex(password.getText()))
+                    .query();
+            if (result.size() == 0) {
+                responseText.setText("Username/password is incorrect");
+            } else {
+                SessionContext.getInstance().setCurrentUser(result.get(0));
+                onSuccessfulLogin(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // todo: workout how to handle exception with DB
+        }
         //welcomeText.setText("Welcome to JavaFX Application!");
         /*
         responseText.setText("Username/Password incorrect");
@@ -55,13 +85,17 @@ public class LoginController {
             System.err.println("error");
             e.printStackTrace();
             */
-        try{
-            /*Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
-            Stage window = (Stage) Login.getScene().getWindow();
-            window.setScene(new Scene(root));*/
-            Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
+
+    }
+
+    private void onSuccessfulLogin(ActionEvent event) {
+        try {
+    /*Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
+    Stage window = (Stage) Login.getScene().getWindow();
+    window.setScene(new Scene(root));*/
+            Parent root = FXMLLoader.load(BooksListController.class.getResource("booksListPage.fxml"));
             Scene booksListScene = new Scene(root);
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(booksListScene);
             window.show();
 
@@ -70,8 +104,6 @@ public class LoginController {
             System.err.println("error");
             e.printStackTrace();
         }
-
-
     }
 
 

@@ -1,44 +1,52 @@
 package il.ac.hit.jfxbookies.view;
 
+import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import javafx.application.Application;
 import javafx.scene.control.TableColumn;
-import il.ac.hit.jfxbookies.JdbcDriverSetup;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
-import java.io.IOException;
+import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.sql.SQLException;
-import java.util.Objects;
-
-
+import java.util.List;
 
 
 public class BooksListController {
     @FXML
     private TableView<Book> dataTable;
     @FXML
-    private TableColumn<Book, Integer> IDTableColumn;
+    private TableColumn<Book, Integer> idTableColumn;
     @FXML
-    private TableColumn<Book, String> TitleTableColumn;
+    private TableColumn<Book, String> titleTableColumn;
     @FXML
-    private TableColumn<Book, String> AuthorTableColumn;
+    private TableColumn<Book, String> authorTableColumn;
     @FXML
-    private TableColumn<Book, String> GenreTableColumn;
+    private TableColumn<Book, String> genreTableColumn;
     @FXML
-    private TableColumn<Book,String> LocationTableColumn;
+    private TableColumn<Book,String> locationTableColumn;
 
-    ObservableList<Book> BookObservableList= FXCollections.observableArrayList();
+    private final ObservableList<Book> bookObservableList = FXCollections.observableArrayList();
 
     //public void initialize()
 
+    public void initialize() {
+        try {
+            System.out.println("test....");
+            List<Book> c = JdbcDriverSetup.getLookup(Book.class).queryForAll();
+            idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
+            titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+            authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+            genreTableColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+            locationTableColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+            bookObservableList.addAll(c);
+            dataTable.setItems(bookObservableList);
+        } catch (SQLException e) {
+            //todo: handle error
+            e.printStackTrace();
+        }
+    }
 
 /*
     try{
