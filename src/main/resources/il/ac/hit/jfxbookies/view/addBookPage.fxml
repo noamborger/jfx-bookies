@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.AddBookController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.AddBookController">
    <children>
-      <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="&lt;-" />
+      <Button id="back" fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="&lt;-" />
       <Label layoutX="153.0" layoutY="110.0" text="Title:" />
       <TextField layoutX="195.0" layoutY="106.0" prefHeight="25.0" prefWidth="221.0" />
       <Label layoutX="146.0" layoutY="152.0" text="Author:" />
@@ -17,7 +15,7 @@
       <TextField layoutX="195.0" layoutY="194.0" prefHeight="25.0" prefWidth="221.0" />
       <Label layoutX="145.0" layoutY="241.0" text="Locton:" />
       <TextField layoutX="195.0" layoutY="237.0" prefHeight="25.0" prefWidth="221.0" />
-      <Button layoutX="255.0" layoutY="307.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Add Book" />
+      <Button id="addBook" fx:id="addBookButton" layoutX="255.0" layoutY="307.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" onAction="#onAddBookButtonClick" text="Add Book" />
       <Label graphicTextGap="15.0" layoutX="204.0" layoutY="39.0" prefHeight="53.0" prefWidth="181.0" text="New Book" textAlignment="CENTER" textFill="#59c4f0" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font name="System Bold" size="36.0" />

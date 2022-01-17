@@ -1,7 +1,9 @@
 package il.ac.hit.jfxbookies.view;
 
+import il.ac.hit.jfxbookies.person.User;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
+import il.ac.hit.jfxbookies.session.SessionContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,11 +22,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static il.ac.hit.jfxbookies.session.SessionContext.getInstance;
+
 
 public class BooksListController {
 
     @FXML
     private Button clientButton;
+    @FXML
+    private Button newBookButton;
 
     @FXML
     private TableView<Book> dataTable;
@@ -41,9 +47,17 @@ public class BooksListController {
 
     private final ObservableList<Book> bookObservableList = FXCollections.observableArrayList();
 
-    //public void initialize()
-
+    // enter the books data to the list
     public void initialize() {
+
+        if (User.UserType.LIBRARIAN == getInstance().getCurrentUser().getUserType()) {
+            newBookButton.setVisible(false);
+        }
+        else{
+            newBookButton.setVisible(true);
+        }
+
+
         try {
             System.out.println("test....");
             List<Book> c = JdbcDriverSetup.getLookup(Book.class).queryForAll();
@@ -80,7 +94,8 @@ public class BooksListController {
 
     }
 
-    public void onAddBookButtonClick(ActionEvent event) {
+    public void onNewBookButtonClick(ActionEvent event) {
+
         Parent root = null;
         try {
             root = FXMLLoader.load(AddBookController.class.getResource("addBookPage.fxml"));

@@ -40,16 +40,17 @@ public class LoginController {
 
     @FXML
     protected void onLoginButtonClick(ActionEvent event) {
-        try {
+        try { //checks if the username and password that match what we have in the DB
+            //using SQL question
             List<User> result = JdbcDriverSetup.getLookup(User.class).queryBuilder()
                     .where()
                     .eq("username", username.getText())
                     .and()
                     .eq("password", DigestUtils.sha512Hex(password.getText()))
                     .query();
-            if (result.size() == 0) {
+            if (result.size() == 0) { //if we did not get a result then the username or password are incorrect
                 responseText.setText("Username/password is incorrect");
-            } else {
+            } else { //if we did get a result then it will go to the next page
                 SessionContext.getInstance().setCurrentUser(result.get(0));
                 onSuccessfulLogin(event);
             }
@@ -94,6 +95,7 @@ public class LoginController {
     /*Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
     Stage window = (Stage) Login.getScene().getWindow();
     window.setScene(new Scene(root));*/
+            //change the scene to the bookListPage
             Parent root = FXMLLoader.load(BooksListController.class.getResource("booksListPage.fxml"));
             Scene booksListScene = new Scene(root);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

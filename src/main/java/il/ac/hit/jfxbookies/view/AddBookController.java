@@ -24,4 +24,7 @@ public class AddBookController {
             e.printStackTrace();
         }
     }
+
+    public void onAddBookButtonClick(ActionEvent event) {
+    }
 }

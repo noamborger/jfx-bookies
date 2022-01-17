@@ -22,14 +22,18 @@ public class User {
     @DatabaseField(dataType = DataType.ENUM_STRING)
     private UserType userType;
 
-    public static User buildUser(String username, String password) {
+    public static User buildUser(String username, String password, UserType userType1) {
+
         return User.builder()
-                .password(DigestUtils.sha512Hex(password))
+                .password(DigestUtils.sha512Hex(password)) //change the password to sha512 so the password won't be on the code
                 .userName(username)
+                .userType(userType1)
                 .build();
     }
 
     public enum UserType {
         MANAGER, LIBRARIAN
     }
+
+
 }
