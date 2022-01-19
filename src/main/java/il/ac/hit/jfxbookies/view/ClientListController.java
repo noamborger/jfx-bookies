@@ -1,10 +1,10 @@
 package il.ac.hit.jfxbookies.view;
 
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
-import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.person.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,12 +15,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ClientListController {
+
+    @FXML
+    private TextField searchClientField;
 
     @FXML
     private TableView<Client> dataTable;
@@ -40,7 +44,7 @@ public class ClientListController {
     public void initialize(){
         try{
             System.out.println("test....");
-            List<Client> c= JdbcDriverSetup.getLookup(Client.class).queryForAll();
+            List<Client> c= JdbcDriverSetup.getDao(Client.class).queryForAll();
             idCTableColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
             nameCTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             emailCTableColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -48,6 +52,10 @@ public class ClientListController {
             phoneCTableColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
             clientObservableList.addAll(c);
             dataTable.setItems(clientObservableList);
+
+            FilteredList<Client> filteredData= new FilteredList<>(clientObservableList, client -> true);
+
+            //searchClientField.textProperty().addListener();
         } catch (SQLException e) {
             //todo: handle error
             e.printStackTrace();
@@ -69,9 +77,7 @@ public class ClientListController {
         }
     }
 
-    public void onChangeClientButton(ActionEvent event) {
-
-    }
+    
 
 
     public void onBackButtonClick(ActionEvent event) {
@@ -86,5 +92,8 @@ public class ClientListController {
             System.err.println("error");
             e.printStackTrace();
         }
+    }
+
+    public void onChangeClientButtonClick(ActionEvent event) {
     }
 }

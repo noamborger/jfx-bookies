@@ -15,13 +15,13 @@
          </font>
       </Label>
       <Label layoutX="155.0" layoutY="138.0" text="Name:" />
-      <TextField layoutX="202.0" layoutY="134.0" prefHeight="25.0" prefWidth="211.0" />
+      <TextField id="nameText" fx:id="nameTextField" layoutX="202.0" layoutY="134.0" prefHeight="25.0" prefWidth="211.0" />
       <Label layoutX="155.0" layoutY="175.0" text="Email:" />
-      <TextField layoutX="202.0" layoutY="171.0" prefHeight="25.0" prefWidth="211.0" />
+      <TextField id="emailText" fx:id="emailTextField" layoutX="202.0" layoutY="171.0" prefHeight="25.0" prefWidth="211.0" />
       <Label layoutX="155.0" layoutY="216.0" text="Phone:" />
-      <TextField layoutX="202.0" layoutY="212.0" prefHeight="25.0" prefWidth="211.0" />
+      <TextField id="phoneText" fx:id="phoneTextField" layoutX="202.0" layoutY="212.0" prefHeight="25.0" prefWidth="211.0" />
       <Label layoutX="147.0" layoutY="257.0" text="Address:" />
-      <TextField layoutX="202.0" layoutY="253.0" prefHeight="25.0" prefWidth="211.0" />
+      <TextField id="addressText" fx:id="addressTextField" layoutX="202.0" layoutY="253.0" prefHeight="25.0" prefWidth="211.0" />
       <Button id="AddClient" fx:id="addClientButton" layoutX="261.0" layoutY="316.0" mnemonicParsing="false" onAction="#onAddClientButtonClick" text="Add Client" />
    </children>
 </AnchorPane>

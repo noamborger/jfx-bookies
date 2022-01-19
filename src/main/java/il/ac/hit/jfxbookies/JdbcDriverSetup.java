@@ -27,7 +27,7 @@ public class JdbcDriverSetup {
 
     }
 
-    public static <D extends Dao<T, ?>, T> D getLookup(Class<T> clazz) {
+    public static <T, ID> Dao<T, ID> getDao(Class<T> clazz) {
         return DaoManager.lookupDao(JdbcDriverSetup.getConnection(), clazz);
     }
 

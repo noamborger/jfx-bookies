@@ -47,7 +47,7 @@ public class HelloApplication extends Application {
                 TableUtils.createTable(JdbcDriverSetup.getConnection(), User.class);
                 tableAlreadyCreated = false;
             } catch (SQLException e) {
-                tableAlreadyCreated = JdbcDriverSetup.getLookup(User.class).queryForFirst() != null;
+                tableAlreadyCreated = JdbcDriverSetup.getDao(User.class).queryForFirst() != null;
              }
             if (!tableAlreadyCreated) {
                 FileChooser fileChooser = new FileChooser();
@@ -75,13 +75,13 @@ public class HelloApplication extends Application {
     private void setupUserTable(File file, ObjectMapper objectMapper) throws IOException, SQLException {
         Setup setup = objectMapper.readValue(file, Setup.class);
         JdbcDriverSetup
-                .getLookup(User.class)
+                .getDao(User.class)
                 .create(User.buildUser(setup.getManagerUser(), setup.getManagerPassword(), User.UserType.MANAGER));
         JdbcDriverSetup
-                .getLookup(User.class)
+                .getDao(User.class)
                 .create(User.buildUser(setup.getLibrarianUser(), setup.getLibrarianPassword(), User.UserType.LIBRARIAN));
         JdbcDriverSetup
-                .getLookup(User.class)
+                .getDao(User.class)
                 .create(User.buildUser(setup.getLibrarian2User(), setup.getLibrarian2Password(), User.UserType.LIBRARIAN));
     }
 

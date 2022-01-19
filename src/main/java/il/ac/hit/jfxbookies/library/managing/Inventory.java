@@ -1,45 +1,58 @@
 package il.ac.hit.jfxbookies.library.managing;
 
 
-
+import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.List;
 
 public class Inventory {
     public static final String NULL_ERROR_FOR_FIELDS = "title, author, genre and location cannot be null";
-    private Map<Integer, Book> books;
-    private static int numberOfBooks;
 
     public Inventory() {
-        this.books = new HashMap<>();
-    }
-
-    public int getBooksCount() {
-        return books.size();
-    }
-
-    public void add(Book book) {
-        if (book.getTitle() == null || book.getAuthor() == null || book.getGenre() == null || book.getLocation() == null) { // if manager
-            throw new NullPointerException(NULL_ERROR_FOR_FIELDS);
-        }
-
-        books.put(book.getSku(), book);
-        //numberOfBooks++;
-    }
-
-    public void remove(Book book) {
-        books.remove(book);
 
     }
 
-    public boolean hasBook(Book book) {
-
-        return books.containsKey(book.getSku());
+    public long getBooksCount() throws SQLException {
+        return JdbcDriverSetup.getDao(Book.class).countOf();
     }
 
-    public void showInventory() {
+    public static void add(Book book) throws SQLException {
+        JdbcDriverSetup.getDao(Book.class).create(book);
+    }
 
+    public void remove(Book book) throws SQLException {
+        JdbcDriverSetup.<Book, Integer>getDao(Book.class).deleteById(book.getSku());
+
+    }
+
+    public boolean hasBook(Book book) throws SQLException {
+
+        return JdbcDriverSetup.getDao(Book.class).queryBuilder()
+                .where()
+                .eq("id", book.getSku())
+                .countOf() > 0;
+    }
+
+    public List<Book> getFilteredBooks(String keyword) throws SQLException {
+        String likeKeyword = "%" + keyword + "%";
+        return JdbcDriverSetup.getDao(Book.class)
+                .queryBuilder()
+                .where()
+                .like("id", likeKeyword)
+                .or()
+                .like("title", likeKeyword)
+                .or()
+                .like("author", likeKeyword)
+                .or()
+                .like("genre", likeKeyword)
+                .or()
+                .like("location", likeKeyword)
+                .query();
+    }
+
+    public List<Book> getAllBooks() throws SQLException {
+        return JdbcDriverSetup.getDao(Book.class).queryForAll();
     }
 }

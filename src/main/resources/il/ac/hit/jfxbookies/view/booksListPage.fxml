@@ -15,7 +15,7 @@
             <TableColumn fx:id="locationTableColumn" prefWidth="105.0" text="Location" />
         </columns>
       </TableView>
-      <TextField layoutX="144.0" layoutY="56.0" prefHeight="25.0" prefWidth="577.0" />
+      <TextField fx:id="searchBookField" layoutX="144.0" layoutY="56.0" prefHeight="25.0" prefWidth="577.0" />
       <Button id="AddBook" fx:id="newBookButton" layoutX="745.0" layoutY="14.0" mnemonicParsing="false" onAction="#onNewBookButtonClick" text="New Book" />
       <Button id="Client" fx:id="clientButton" layoutX="830.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClientButtonClick" text="Client" />
    </children>

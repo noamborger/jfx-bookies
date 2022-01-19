@@ -42,7 +42,7 @@ public class LoginController {
     protected void onLoginButtonClick(ActionEvent event) {
         try { //checks if the username and password that match what we have in the DB
             //using SQL question
-            List<User> result = JdbcDriverSetup.getLookup(User.class).queryBuilder()
+            List<User> result = JdbcDriverSetup.getDao(User.class).queryBuilder()
                     .where()
                     .eq("username", username.getText())
                     .and()

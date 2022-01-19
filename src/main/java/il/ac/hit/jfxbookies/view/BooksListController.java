@@ -3,9 +3,10 @@ package il.ac.hit.jfxbookies.view;
 import il.ac.hit.jfxbookies.person.User;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
-import il.ac.hit.jfxbookies.session.SessionContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,11 +28,10 @@ import static il.ac.hit.jfxbookies.session.SessionContext.getInstance;
 
 
 public class BooksListController {
-
-    @FXML
-    private Button clientButton;
     @FXML
     private Button newBookButton;
+    @FXML
+    private TextField searchBookField;
 
     @FXML
     private TableView<Book> dataTable;
@@ -43,24 +44,19 @@ public class BooksListController {
     @FXML
     private TableColumn<Book, String> genreTableColumn;
     @FXML
-    private TableColumn<Book,String> locationTableColumn;
+    private TableColumn<Book, String> locationTableColumn;
 
     private final ObservableList<Book> bookObservableList = FXCollections.observableArrayList();
 
     // enter the books data to the list
     public void initialize() {
 
-        if (User.UserType.LIBRARIAN == getInstance().getCurrentUser().getUserType()) {
-            newBookButton.setVisible(false);
-        }
-        else{
-            newBookButton.setVisible(true);
-        }
+        newBookButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
 
 
         try {
             System.out.println("test....");
-            List<Book> c = JdbcDriverSetup.getLookup(Book.class).queryForAll();
+            List<Book> c = inventory.showInventory();
             idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
             titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -68,6 +64,35 @@ public class BooksListController {
             locationTableColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
             bookObservableList.addAll(c);
             dataTable.setItems(bookObservableList);
+
+            FilteredList<Book> filteredData = new FilteredList<>(bookObservableList, book -> true);
+
+            searchBookField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+                filteredData.setPredicate(book -> {
+
+                    //if no search value then display all records or what ever records it current have. no change
+                    if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                        return true;
+                    }
+
+                    String searchKeyWord = newValue.toLowerCase();
+                    return book.getTitle().toLowerCase().contains(searchKeyWord) ||
+                            book.getAuthor().toLowerCase().contains(searchKeyWord) ||
+                            book.getGenre().toLowerCase().contains(searchKeyWord) ||
+                            book.getLocation().toLowerCase().contains(searchKeyWord) ||
+                            Integer.toString(book.getSku()).contains(searchKeyWord);
+                });
+            }));
+
+            SortedList<Book> sortedData = new SortedList<>(filteredData);
+
+            //Bind sorted result with table view
+            sortedData.comparatorProperty().bind(dataTable.comparatorProperty());
+
+            //Apply filtered and sorted data to the table view
+            dataTable.setItems(sortedData);
+
+
         } catch (SQLException e) {
             //todo: handle error
             e.printStackTrace();
@@ -75,12 +100,12 @@ public class BooksListController {
     }
 
     @FXML
-    private void onClientButtonClick (ActionEvent event){
+    private void onClientButtonClick(ActionEvent event) {
 
         Parent root = null;
         try {
             root = FXMLLoader.load(ClientListController.class.getResource("clientListPage.fxml"));
-            Scene clientListScene= new Scene(root);
+            Scene clientListScene = new Scene(root);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(clientListScene);
             window.show();
@@ -91,7 +116,6 @@ public class BooksListController {
         }
 
 
-
     }
 
     public void onNewBookButtonClick(ActionEvent event) {
@@ -99,7 +123,7 @@ public class BooksListController {
         Parent root = null;
         try {
             root = FXMLLoader.load(AddBookController.class.getResource("addBookPage.fxml"));
-            Scene addBookScene= new Scene(root);
+            Scene addBookScene = new Scene(root);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(addBookScene);
             window.show();
