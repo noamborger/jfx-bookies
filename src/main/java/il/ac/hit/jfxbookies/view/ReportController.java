@@ -66,9 +66,9 @@ public class ReportController {
             bookObservableList.addAll(books);
             dataTable.setItems(bookObservableList);
 
-            numberOfBooksLabel.setText(String.valueOf(JdbcDriverSetup.getDao(Book.class).queryBuilder()
+            numberOfBooksLabel.setText(String.valueOf(JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
                             .where()
-                            .eq("active", 1)
+                            .eq("active", true)
                             .query()
                             .size()));
             numberOfBorrowedBooksLabel.setText(String.valueOf(JdbcDriverSetup.getDao(BorrowBook.class).queryForAll().size()));
