@@ -91,7 +91,7 @@ public class HelloApplication extends Application {
         /*FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loginPage.fxml"));*/
         Parent root = fxWeaver.loadView(LoginController.class);
         Scene scene = new Scene(root, 500, 400);
-        stage.setTitle("Login");
+        stage.setTitle("Bookies");
         stage.setScene(scene);
         stage.show();
     }

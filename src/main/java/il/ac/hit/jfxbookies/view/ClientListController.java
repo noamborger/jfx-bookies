@@ -2,6 +2,7 @@ package il.ac.hit.jfxbookies.view;
 
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -95,22 +96,17 @@ public class ClientListController {
     }
 
     public void onAddClientButtonClient(ActionEvent event) {
-        Parent root = fxWeaver.loadView(AddClientController.class);
-        Scene addClientScene = new Scene(root);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(addClientScene);
-        window.show();
+        clientObservableList.clear();
+        GraphicsUtils.openWindow(event, AddClientController.class);
     }
 
 
     public void onBackButtonClick(ActionEvent event) {
-        Parent root = fxWeaver.loadView(BooksListController.class);
-        Scene booksListScene = new Scene(root);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(booksListScene);
-        window.show();
+        clientObservableList.clear();
+        GraphicsUtils.openWindow(event, BooksListController.class);
     }
 
     public void onChangeClientButtonClick(ActionEvent event) {
+
     }
 }

@@ -3,6 +3,7 @@ package il.ac.hit.jfxbookies.view;
 import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.Inventory;
 import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @Component
 @FxmlView("addClientPage.fxml")
@@ -38,12 +40,7 @@ public class AddClientController {
     private FxWeaver fxWeaver;
 
     public void onBackButtonClick(ActionEvent event) {
-        Parent root = fxWeaver.loadView(ClientListController.class);
-
-        Scene clientListScene = new Scene(root);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(clientListScene);
-        window.show();
+        GraphicsUtils.openWindow(event, ClientListController.class);
     }
 
 
@@ -61,6 +58,7 @@ public class AddClientController {
                     .build();
             client.addClient();
         }
+        onBackButtonClick(event);
 
 
     }

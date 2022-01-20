@@ -13,6 +13,7 @@ import java.sql.SQLException;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Client extends AbstractPerson{
+
     @DatabaseField(unique = true)
     private String phone;
     @DatabaseField

@@ -2,6 +2,8 @@ package il.ac.hit.jfxbookies.view;
 
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
+import il.ac.hit.jfxbookies.library.managing.BookBorrowManager;
+import il.ac.hit.jfxbookies.library.managing.BorrowBook;
 import il.ac.hit.jfxbookies.library.managing.Inventory;
 import il.ac.hit.jfxbookies.person.Client;
 import il.ac.hit.jfxbookies.person.User;
@@ -54,6 +56,9 @@ public class InfoBookController {
     @FXML
     private Button borrowButton;
 
+    @Autowired
+    private BookBorrowManager bookBorrowManager;
+
 
 
     @Autowired
@@ -68,6 +73,7 @@ public class InfoBookController {
         authorLabel.setText(book.getAuthor());
         genreLabel.setText(book.getGenre());
         locationLabel.setText(book.getLocation());
+        //isBorrowedLabel.setText(JdbcDriverSetup.getDao(BorrowBook.class).query());
 
 
     }
@@ -90,14 +96,28 @@ public class InfoBookController {
 
         String idPhone = clientIdPhoneField.getText();
         try {
-            Client client = JdbcDriverSetup.getDao(Client.class).queryForId(idPhone);  //ask ben
+            Client client = JdbcDriverSetup.getDao(Client.class).queryForId(idPhone);
 
-
+            bookBorrowManager.borrowBookByClient(SessionContext.getInstance().getCurrentBook(), client);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 
+    }
+
+    public void onReturnButtonClick (ActionEvent actionEvent) {
+        try {
+            BorrowBook borrowBook = JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
+                    .where()
+                    .eq("book_id", SessionContext.getInstance().getCurrentBook().getSku())
+                    .and()
+                    .eq("client_id", clientLabel.getText())
+                    .queryForFirst();
+            bookBorrowManager.deactivateBookBorrow(borrowBook);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

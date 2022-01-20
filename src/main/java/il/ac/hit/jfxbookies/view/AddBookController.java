@@ -3,6 +3,7 @@ package il.ac.hit.jfxbookies.view;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.Inventory;
+import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,11 +43,7 @@ public class AddBookController {
 
 
     public void onBackButtonClick(ActionEvent event) {
-        Parent root = fxWeaver.loadView(BooksListController.class);
-        Scene bookListScene = new Scene(root);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(bookListScene);
-        window.show();
+        GraphicsUtils.openWindow(event, BooksListController.class);
     }
 
     public void onAddBookButtonClick(ActionEvent event) {

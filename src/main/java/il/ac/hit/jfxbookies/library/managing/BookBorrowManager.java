@@ -42,8 +42,5 @@ public class BookBorrowManager {
         JdbcDriverSetup.getDao(BorrowBook.class)
                 .update(borrowBook);
     }
-
-    public void showBooksBorrowedByClient (String id){
-
-    }
+    
 }

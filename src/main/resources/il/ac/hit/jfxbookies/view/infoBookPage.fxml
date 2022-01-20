@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.InfoBookController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.InfoBookController">
    <children>
       <Button id="Back" fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="&lt;-" />
       <Label layoutX="74.0" layoutY="156.0" text="Title:">
@@ -83,7 +83,7 @@
          </font>
       </Label>
       <Button fx:id="borrowButton" layoutX="514.0" layoutY="328.0" mnemonicParsing="false" onAction="#onBorrowButtonClick" prefHeight="25.0" prefWidth="77.0" text="Borrow" />
-      <Button layoutX="488.0" layoutY="276.0" mnemonicParsing="false" text="Return" />
+      <Button layoutX="488.0" layoutY="276.0" mnemonicParsing="false" onAction="#onReturnButtonClick" text="Return" />
       <Label layoutX="14.0" layoutY="332.0" text="To rent the book please enter client's ID or phone number:">
          <font>
             <Font name="System Bold Italic" size="12.0" />
