@@ -3,10 +3,12 @@ package il.ac.hit.jfxbookies.library.managing;
 
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
+@Service
 public class Inventory {
     public static final String NULL_ERROR_FOR_FIELDS = "title, author, genre and location cannot be null";
 

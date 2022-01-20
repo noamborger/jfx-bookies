@@ -16,11 +16,18 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
+import net.rgielen.fxweaver.core.FxWeaver;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
+@Component
+@FxmlView("clientListPage.fxml")
 public class ClientListController {
 
     @FXML
@@ -39,12 +46,14 @@ public class ClientListController {
     @FXML
     private TableColumn<Client, String> phoneCTableColumn;
 
-    private final ObservableList<Client> clientObservableList =FXCollections.observableArrayList();
+    @Autowired
+    private FxWeaver fxWeaver;
 
-    public void initialize(){
-        try{
-            System.out.println("test....");
-            List<Client> c= JdbcDriverSetup.getDao(Client.class).queryForAll();
+    private final ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
+
+    public void initialize() {
+        try {
+            List<Client> c = JdbcDriverSetup.getDao(Client.class).queryForAll();
             idCTableColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
             nameCTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             emailCTableColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -53,9 +62,25 @@ public class ClientListController {
             clientObservableList.addAll(c);
             dataTable.setItems(clientObservableList);
 
-            FilteredList<Client> filteredData= new FilteredList<>(clientObservableList, client -> true);
+            FilteredList<Client> filteredData = new FilteredList<>(clientObservableList, client -> true);
 
-            //searchClientField.textProperty().addListener();
+            searchClientField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(client -> {
+                    if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                        return true;
+                    }
+
+                    String searchKeyWord = newValue.toLowerCase();
+                    return client.getName().toLowerCase().contains(searchKeyWord) ||
+                            client.getAddress().toLowerCase().contains(searchKeyWord) ||
+                            client.getEmail().toLowerCase().contains(searchKeyWord) ||
+                            client.getPhone().toLowerCase().contains(searchKeyWord);
+                    //Integer.toString(client.getId()).contains(searchKeyWord);
+
+                });
+            });
+
+
         } catch (SQLException e) {
             //todo: handle error
             e.printStackTrace();
@@ -63,35 +88,20 @@ public class ClientListController {
     }
 
     public void onAddClientButtonClient(ActionEvent event) {
-
-        try {
-            Parent root = FXMLLoader.load(AddClientController.class.getResource("addClientPage.fxml"));
-            Scene addClientScene= new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(addClientScene);
-            window.show();
-
-        } catch (IOException e) {
-            System.err.println("error");
-            e.printStackTrace();
-        }
+        Parent root = fxWeaver.loadView(AddClientController.class);
+        Scene addClientScene = new Scene(root);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(addClientScene);
+        window.show();
     }
-
-    
 
 
     public void onBackButtonClick(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(BooksListController.class.getResource("booksListPage.fxml"));
-            Scene booksListScene= new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(booksListScene);
-            window.show();
-
-        } catch (IOException e) {
-            System.err.println("error");
-            e.printStackTrace();
-        }
+        Parent root = fxWeaver.loadView(BooksListController.class);
+        Scene booksListScene = new Scene(root);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(booksListScene);
+        window.show();
     }
 
     public void onChangeClientButtonClick(ActionEvent event) {

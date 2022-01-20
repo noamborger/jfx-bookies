@@ -1,24 +1,27 @@
 package il.ac.hit.jfxbookies.view;
 
-import il.ac.hit.jfxbookies.person.User;
-import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
+import il.ac.hit.jfxbookies.library.managing.Inventory;
+import il.ac.hit.jfxbookies.person.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.scene.control.TextField;
+import net.rgielen.fxweaver.core.FxWeaver;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,7 +29,8 @@ import java.util.List;
 
 import static il.ac.hit.jfxbookies.session.SessionContext.getInstance;
 
-
+@Component
+@FxmlView("booksListPage.fxml")
 public class BooksListController {
     @FXML
     private Button newBookButton;
@@ -46,7 +50,17 @@ public class BooksListController {
     @FXML
     private TableColumn<Book, String> locationTableColumn;
 
+    @Autowired
+    private Inventory inventory;
+
+    @Autowired
+    private FxWeaver fxWeaver;
+
     private final ObservableList<Book> bookObservableList = FXCollections.observableArrayList();
+
+    public BooksListController() {
+
+    }
 
     // enter the books data to the list
     public void initialize() {
@@ -55,8 +69,7 @@ public class BooksListController {
 
 
         try {
-            System.out.println("test....");
-            List<Book> c = inventory.showInventory();
+            List<Book> c = inventory.getAllBooks();
             idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
             titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -101,36 +114,18 @@ public class BooksListController {
 
     @FXML
     private void onClientButtonClick(ActionEvent event) {
-
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(ClientListController.class.getResource("clientListPage.fxml"));
-            Scene clientListScene = new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(clientListScene);
-            window.show();
-
-        } catch (IOException e) {
-            System.err.println("error");
-            e.printStackTrace();
-        }
-
-
+        Parent root = fxWeaver.loadView(ClientListController.class);
+        Scene clientListScene = new Scene(root);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(clientListScene);
+        window.show();
     }
 
     public void onNewBookButtonClick(ActionEvent event) {
-
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(AddBookController.class.getResource("addBookPage.fxml"));
+            Parent root = fxWeaver.loadView(AddBookController.class);
             Scene addBookScene = new Scene(root);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(addBookScene);
             window.show();
-
-        } catch (IOException e) {
-            System.err.println("error");
-            e.printStackTrace();
-        }
     }
 }

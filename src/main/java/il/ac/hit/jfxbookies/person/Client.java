@@ -13,7 +13,6 @@ import java.sql.SQLException;
 
 @Data
 @DatabaseTable
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Client extends AbstractPerson{

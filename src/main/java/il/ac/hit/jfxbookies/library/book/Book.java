@@ -4,6 +4,7 @@ package il.ac.hit.jfxbookies.library.book;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.managing.BorrowBook;
 import lombok.*;
 
@@ -36,8 +37,7 @@ public class Book {
     // Set functions
     //Other functions
     public void showBookInfo(String sku){
-        //go to inventory
-        //go to data
+        ////JdbcDriverSetup.getDao(Book.class).;
 
 
     }
