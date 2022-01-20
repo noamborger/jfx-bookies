@@ -13,7 +13,7 @@ import java.sql.SQLException;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Client extends AbstractPerson{
-    @DatabaseField
+    @DatabaseField(unique = true)
     private String phone;
     @DatabaseField
     private String address;
@@ -24,7 +24,6 @@ public class Client extends AbstractPerson{
     @Builder
     public Client(String name, String email, String phone, String address){
         super(name);
-        //this.name=name;
         this.email=email;
         this.phone=phone;
         this.address=address;
@@ -39,6 +38,16 @@ public class Client extends AbstractPerson{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Client getClientById(int id) throws SQLException {
+        return JdbcDriverSetup.getDao(Client.class)
+                .queryBuilder()
+                .where()
+                .eq("id", id)
+                .or()
+                .eq("phone", id)
+                .queryForFirst();
     }
 
 

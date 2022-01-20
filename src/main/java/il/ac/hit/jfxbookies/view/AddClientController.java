@@ -12,9 +12,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxWeaver;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
+@FxmlView("addClientPage.fxml")
 public class AddClientController {
 
     private Button backButton;
@@ -28,29 +34,24 @@ public class AddClientController {
     @FXML
     private TextField addressTextField;
 
+    @Autowired
+    private FxWeaver fxWeaver;
+
     public void onBackButtonClick(ActionEvent event) {
+        Parent root = fxWeaver.loadView(ClientListController.class);
 
-
-        try {
-            Parent root = FXMLLoader.load(ClientListController.class.getResource("clientListPage.fxml"));
-            Scene clientListScene= new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(clientListScene);
-            window.show();
-
-        } catch (IOException e) {
-            System.err.println("error");
-            e.printStackTrace();
-        }
+        Scene clientListScene = new Scene(root);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(clientListScene);
+        window.show();
     }
 
 
     public void onAddClientButtonClick(ActionEvent event) {
 
-        if(nameTextField.getText().isBlank() | emailTextField.getText().isBlank() | phoneTextField.getText().isBlank() | addressTextField.getText().isBlank()){
+        if (nameTextField.getText().isBlank() | emailTextField.getText().isBlank() | phoneTextField.getText().isBlank() | addressTextField.getText().isBlank()) {
 
-        }
-        else {
+        } else {
             Client client = Client
                     .builder()
                     .name(nameTextField.getText())

@@ -1,5 +1,6 @@
 package il.ac.hit.jfxbookies.session;
 
+import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.person.User;
 import lombok.Data;
 
@@ -8,9 +9,14 @@ import lombok.Data;
 @Data
 public final class SessionContext {
     private User currentUser;
+    private Book currentBook;
 
     private SessionContext() {
 
+    }
+
+    public boolean isCurrentUserManager() {
+        return getCurrentUser() != null && User.UserType.MANAGER == getCurrentUser().getUserType();
     }
 
     private static class InstanceHolder {

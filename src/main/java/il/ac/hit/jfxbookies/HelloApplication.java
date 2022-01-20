@@ -1,25 +1,48 @@
-package il.ac.hit.jfxbookies.view;
+package il.ac.hit.jfxbookies;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.table.TableUtils;
-import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.BorrowBook;
 import il.ac.hit.jfxbookies.person.Client;
 import il.ac.hit.jfxbookies.person.User;
 import il.ac.hit.jfxbookies.startup.Setup;
+import il.ac.hit.jfxbookies.view.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxWeaver;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
+
+//@SpringBootApplication(scanBasePackages = "il.ac.hit.jfxbookies.*")
 public class HelloApplication extends Application {
+    private ConfigurableApplicationContext springContext;
+
+    @Override
+    public void init() {
+        String[] args = getParameters().getRaw().toArray(new String[0]);
+        this.springContext = new SpringApplicationBuilder()
+                .sources(Launcher.class)
+                .run(args);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        springContext.close();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         try {
@@ -48,7 +71,7 @@ public class HelloApplication extends Application {
                 tableAlreadyCreated = false;
             } catch (SQLException e) {
                 tableAlreadyCreated = JdbcDriverSetup.getDao(User.class).queryForFirst() != null;
-             }
+            }
             if (!tableAlreadyCreated) {
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Setup JSON File", "*.json"));
@@ -64,8 +87,10 @@ public class HelloApplication extends Application {
             }
             throw new RuntimeException(e);
         }
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loginPage.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 400);
+        FxWeaver fxWeaver = springContext.getBean(FxWeaver.class);
+        /*FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loginPage.fxml"));*/
+        Parent root = fxWeaver.loadView(LoginController.class);
+        Scene scene = new Scene(root, 500, 400);
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
@@ -84,6 +109,7 @@ public class HelloApplication extends Application {
                 .getDao(User.class)
                 .create(User.buildUser(setup.getLibrarian2User(), setup.getLibrarian2Password(), User.UserType.LIBRARIAN));
     }
+
 
     public static void main(String[] args) {
         launch();

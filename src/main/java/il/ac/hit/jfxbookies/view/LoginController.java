@@ -14,12 +14,18 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import net.rgielen.fxweaver.core.FxWeaver;
+import net.rgielen.fxweaver.core.FxmlView;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
+@FxmlView("loginPage.fxml")
 public class LoginController {
     @FXML
     private Label responseText;
@@ -30,6 +36,9 @@ public class LoginController {
 
     @FXML
     private Button loginButton;
+
+    @Autowired
+    private FxWeaver fxWeaver;
 /*
     public void initialize() {
         // if user.getUserType() != MANAGER
@@ -90,23 +99,16 @@ public class LoginController {
 
     }
 
-    private void onSuccessfulLogin(ActionEvent event) {
-        try {
+    private void onSuccessfulLogin(ActionEvent event){
     /*Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
     Stage window = (Stage) Login.getScene().getWindow();
     window.setScene(new Scene(root));*/
-            //change the scene to the bookListPage
-            Parent root = FXMLLoader.load(BooksListController.class.getResource("booksListPage.fxml"));
+            //change the scene to the
+            Parent root = fxWeaver.loadView(BooksListController.class);
             Scene booksListScene = new Scene(root);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(booksListScene);
             window.show();
-
-
-        } catch (IOException e) {
-            System.err.println("error");
-            e.printStackTrace();
-        }
     }
 
 

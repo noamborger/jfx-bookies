@@ -6,19 +6,20 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.person.Client;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Calendar;
 
 @DatabaseTable
 @NoArgsConstructor
+@Data
 public class BorrowBook {
     @DatabaseField(foreign = true, columnName = "client_id", foreignColumnName = "id")
     private Client client;
     @DatabaseField
     private long date;
     @DatabaseField(generatedId = true, allowGeneratedIdInsert = true)
+    @Setter(AccessLevel.NONE)
     private int id;
     @DatabaseField(foreign = true, columnName = "book_id", foreignColumnName = "id")
     private Book book;
