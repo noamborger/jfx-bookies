@@ -54,12 +54,12 @@ public class AddClientController {
         } else {
             Client client = Client
                     .builder()
-                    .id("")
                     .name(nameTextField.getText())
                     .email(emailTextField.getText())
                     .phone(phoneTextField.getText())
                     .address(addressTextField.getText())
                     .build();
+            client.addClient();
         }
 
 

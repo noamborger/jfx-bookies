@@ -20,12 +20,12 @@ public class Inventory {
         return JdbcDriverSetup.getDao(Book.class).countOf();
     }
 
-    public static void add(Book book) throws SQLException {
+    public void add(Book book) throws SQLException {
         JdbcDriverSetup.getDao(Book.class).create(book);
     }
 
-    public void remove(Book book) throws SQLException {
-        JdbcDriverSetup.<Book, Integer>getDao(Book.class).deleteById(book.getSku());
+    public void remove(int sku) throws SQLException {
+        JdbcDriverSetup.<Book, Integer>getDao(Book.class).deleteById(sku);
 
     }
 

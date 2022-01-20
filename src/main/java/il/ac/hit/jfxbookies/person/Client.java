@@ -3,10 +3,7 @@ package il.ac.hit.jfxbookies.person;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.sql.SQLException;
@@ -25,8 +22,9 @@ public class Client extends AbstractPerson{
 
 
     @Builder
-    public Client(String id, String name, String email, String phone, String address){
-        super(id, name);
+    public Client(String name, String email, String phone, String address){
+        super(name);
+        //this.name=name;
         this.email=email;
         this.phone=phone;
         this.address=address;
@@ -34,8 +32,13 @@ public class Client extends AbstractPerson{
 
 
     @Override
-    public void printInfo() {
-
+    public AbstractPerson printInfo(int id) {
+        try {
+            return JdbcDriverSetup.getDao(Client.class).queryForId(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -50,6 +53,11 @@ public class Client extends AbstractPerson{
 
     }
     public void deleteClient(String id){
+        try {
+            JdbcDriverSetup.getDao(Client.class).deleteById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 }

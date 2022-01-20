@@ -8,6 +8,8 @@ import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.managing.BorrowBook;
 import lombok.*;
 
+import java.sql.SQLException;
+
 @DatabaseTable(tableName = "books")
 @NoArgsConstructor
 @Data
@@ -36,8 +38,14 @@ public class Book {
 
     // Set functions
     //Other functions
-    public void showBookInfo(String sku){
-        ////JdbcDriverSetup.getDao(Book.class).;
+    public Book showBookInfo(String sku){
+        try {
+            return JdbcDriverSetup.getDao(Book.class).queryForId(sku);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
 
 
     }

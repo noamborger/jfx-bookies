@@ -5,6 +5,7 @@ import il.ac.hit.jfxbookies.person.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,20 +67,26 @@ public class ClientListController {
 
             searchClientField.textProperty().addListener((observable, oldValue, newValue) -> {
                 filteredData.setPredicate(client -> {
-                    if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                    if (newValue.isBlank() || newValue.isEmpty() || newValue==null){
                         return true;
                     }
-
                     String searchKeyWord = newValue.toLowerCase();
                     return client.getName().toLowerCase().contains(searchKeyWord) ||
-                            client.getAddress().toLowerCase().contains(searchKeyWord) ||
                             client.getEmail().toLowerCase().contains(searchKeyWord) ||
-                            client.getPhone().toLowerCase().contains(searchKeyWord);
-                    //Integer.toString(client.getId()).contains(searchKeyWord);
+                            client.getPhone().toLowerCase().contains(searchKeyWord) ||
+                            client.getAddress().toLowerCase().contains(searchKeyWord);
+                            //Integer.toString(client.getId()).contains(searchKeyWord);
 
                 });
             });
 
+            SortedList<Client> sortedData = new SortedList<>(filteredData);
+
+            //Bind sorted result with table view
+            sortedData.comparatorProperty().bind(dataTable.comparatorProperty());
+
+            //Apply filtered and sorted data to the table view
+            dataTable.setItems(sortedData);
 
         } catch (SQLException e) {
             //todo: handle error

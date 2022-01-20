@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.InfoBookController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.InfoBookController">
    <children>
       <Button id="Back" fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="&lt;-" />
       <Label layoutX="74.0" layoutY="156.0" text="Title:">
@@ -14,7 +12,7 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="115.0" layoutY="156.0">
+      <Label fx:id="titleLabel" layoutX="115.0" layoutY="156.0">
          <font>
             <Font size="15.0" />
          </font>
@@ -24,7 +22,7 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="112.0" layoutY="197.0">
+      <Label fx:id="authorLabel" layoutX="112.0" layoutY="197.0">
          <font>
             <Font size="15.0" />
          </font>
@@ -34,7 +32,7 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="112.0" layoutY="239.0">
+      <Label fx:id="genreLabel" layoutX="112.0" layoutY="239.0">
          <font>
             <Font size="15.0" />
          </font>
@@ -44,17 +42,17 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="112.0" layoutY="282.0">
+      <Label fx:id="locationLabel" layoutX="112.0" layoutY="282.0">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="458.0" layoutY="126.0" text="Is Borroed">
+      <Label layoutX="458.0" layoutY="126.0" text="Is Borrowed">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="483.0" layoutY="159.0">
+      <Label fx:id="isBorrowLabel" layoutX="483.0" layoutY="159.0">
          <font>
             <Font size="15.0" />
          </font>
@@ -64,7 +62,7 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="483.0" layoutY="242.0">
+      <Label fx:id="clientLabel" layoutX="483.0" layoutY="242.0">
          <font>
             <Font size="15.0" />
          </font>
@@ -79,19 +77,19 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="120.0" layoutY="114.0">
+      <Label fx:id="skuLabel" layoutX="120.0" layoutY="114.0">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="451.0" layoutY="328.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Borrow" />
+      <Button fx:id="borrowButton" layoutX="514.0" layoutY="328.0" mnemonicParsing="false" onAction="#onBorrowButtonClick" prefHeight="25.0" prefWidth="77.0" text="Borrow" />
       <Button layoutX="488.0" layoutY="276.0" mnemonicParsing="false" text="Return" />
-      <Label layoutX="47.0" layoutY="332.0" text="To rent the book please enter client's ID:">
+      <Label layoutX="14.0" layoutY="332.0" text="To rent the book please enter client's ID or phone number:">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="285.0" layoutY="328.0" />
+      <TextField fx:id="clientIdPhoneField" layoutX="350.0" layoutY="328.0" />
       <Button id="removeBook" fx:id="removeBookButton" layoutX="469.0" layoutY="60.0" mnemonicParsing="false" onAction="#onRemoveBookButtonClick" text="Remove Book" />
    </children>
 </AnchorPane>

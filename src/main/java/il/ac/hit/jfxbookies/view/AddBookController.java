@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @Component
 @FxmlView("addBookPage.fxml")
@@ -49,12 +50,17 @@ public class AddBookController {
     }
 
     public void onAddBookButtonClick(ActionEvent event) {
-        if (titleTextField.getText().isBlank() || authorTextField.getText().isBlank() || genreTextField.getText().isBlank() || locationTextField.getText().isBlank()) {
+        if(titleTextField.getText().isBlank() || authorTextField.getText().isBlank() || genreTextField.getText().isBlank() || locationTextField.getText().isBlank()){
 
         } else {
             Book book = new Book(titleTextField.getText(), authorTextField.getText(), genreTextField.getText(), locationTextField.getText());
 
             //JdbcDriverSetup.getCreate(Book.class).create(book); //Inventory.add(book);
+            try {
+                inventory.add(book);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }
