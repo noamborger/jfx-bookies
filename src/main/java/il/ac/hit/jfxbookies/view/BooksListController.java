@@ -1,5 +1,6 @@
 package il.ac.hit.jfxbookies.view;
 
+import il.ac.hit.jfxbookies.person.Client;
 import il.ac.hit.jfxbookies.person.User;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
@@ -32,6 +33,8 @@ public class BooksListController {
     private Button newBookButton;
     @FXML
     private TextField searchBookField;
+    @FXML
+    private Button reportButton;
 
     @FXML
     private TableView<Book> dataTable;
@@ -52,11 +55,12 @@ public class BooksListController {
     public void initialize() {
 
         newBookButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
+        reportButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
 
 
         try {
             System.out.println("test....");
-            List<Book> c = inventory.showInventory();
+            List<Book> c = JdbcDriverSetup.getDao(Book.class).queryForAll();//inventory.showInventory();
             idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
             titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -130,6 +134,19 @@ public class BooksListController {
 
         } catch (IOException e) {
             System.err.println("error");
+            e.printStackTrace();
+        }
+    }
+
+    public void onReportButtonClick(ActionEvent event) {
+        try {
+            Parent root= FXMLLoader.load(ReportController.class.getResource("reportPage.fxml"));
+            Scene reportScene = new Scene(root);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(reportScene);
+            window.show();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

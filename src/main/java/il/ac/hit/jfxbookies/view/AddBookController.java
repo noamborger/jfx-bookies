@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class AddBookController {
 
@@ -43,13 +44,18 @@ public class AddBookController {
     }
 
     public void onAddBookButtonClick(ActionEvent event) {
-        Inventory inventory;
+        Inventory inventory = new Inventory();
         if(titleTextField.getText().isBlank() | authorTextField.getText().isBlank() | genreTextField.getText().isBlank() | locationTextField.getText().isBlank()){
 
         }
         else {
             Book book = new Book(titleTextField.getText(), authorTextField.getText(), genreTextField.getText(), locationTextField.getText());
             //JdbcDriverSetup.getCreate(Book.class).create(book); //Inventory.add(book);
+            try {
+                inventory.add(book);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }

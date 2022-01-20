@@ -8,17 +8,20 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class AbstractPerson {
-    @DatabaseField(id = true)
-    protected String id;
+    @DatabaseField(generatedId = true, allowGeneratedIdInsert = true)
+    protected int id;
     @Setter
     @DatabaseField()
     protected String name;
 
-    public abstract void printInfo();
+    public AbstractPerson(String name) {
+        this.name = name;
+    }
+
+    public abstract AbstractPerson printInfo(int id);
 
 }
 

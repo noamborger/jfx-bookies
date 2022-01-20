@@ -4,8 +4,11 @@ package il.ac.hit.jfxbookies.library.book;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.managing.BorrowBook;
 import lombok.*;
+
+import java.sql.SQLException;
 
 @DatabaseTable(tableName = "books")
 @NoArgsConstructor
@@ -35,9 +38,14 @@ public class Book {
 
     // Set functions
     //Other functions
-    public void showBookInfo(String sku){
-        //go to inventory
-        //go to data
+    public Book showBookInfo(String sku){
+        try {
+            return JdbcDriverSetup.getDao(Book.class).queryForId(sku);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
 
 
     }
