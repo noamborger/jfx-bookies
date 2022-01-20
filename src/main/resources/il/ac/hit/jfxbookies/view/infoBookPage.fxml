@@ -52,12 +52,12 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="isBorrowLabel" layoutX="483.0" layoutY="159.0">
+      <Label fx:id="isBorrowedLabel" layoutX="483.0" layoutY="159.0">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="461.0" layoutY="198.0" text="Client">
+      <Label layoutX="461.0" layoutY="198.0" text="Client id">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>

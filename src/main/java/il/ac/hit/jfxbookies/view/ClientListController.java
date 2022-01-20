@@ -1,6 +1,7 @@
 package il.ac.hit.jfxbookies.view;
 
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
+import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.person.Client;
 import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +29,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
+
+import static il.ac.hit.jfxbookies.session.SessionContext.getInstance;
 
 @Component
 @FxmlView("clientListPage.fxml")
@@ -54,6 +58,20 @@ public class ClientListController {
     private final ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
 
     public void initialize() {
+
+        dataTable.setRowFactory(tv ->{
+            TableRow<Client> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    var client = row.getItem();
+                    getInstance().setCurrentClient(client);
+                    clientObservableList.clear();
+                    GraphicsUtils.openWindow(event, ChangeClientController.class);
+                }
+                });
+            return row;
+        });
+
         try {
             List<Client> c = JdbcDriverSetup.getDao(Client.class).queryForAll();
             idCTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -75,8 +93,8 @@ public class ClientListController {
                     return client.getName().toLowerCase().contains(searchKeyWord) ||
                             client.getEmail().toLowerCase().contains(searchKeyWord) ||
                             client.getPhone().toLowerCase().contains(searchKeyWord) ||
-                            client.getAddress().toLowerCase().contains(searchKeyWord);
-                            //Integer.toString(client.getId()).contains(searchKeyWord);
+                            client.getAddress().toLowerCase().contains(searchKeyWord)||
+                            Integer.toString(client.getId()).contains(searchKeyWord);
 
                 });
             });

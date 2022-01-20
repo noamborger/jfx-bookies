@@ -1,6 +1,7 @@
 package il.ac.hit.jfxbookies.session;
 
 import il.ac.hit.jfxbookies.library.book.Book;
+import il.ac.hit.jfxbookies.person.Client;
 import il.ac.hit.jfxbookies.person.User;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import lombok.Data;
 public final class SessionContext {
     private User currentUser;
     private Book currentBook;
+    private Client currentClient;
 
     private SessionContext() {
 

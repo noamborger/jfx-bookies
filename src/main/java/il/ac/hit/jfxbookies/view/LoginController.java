@@ -39,13 +39,6 @@ public class LoginController {
 
     @Autowired
     private FxWeaver fxWeaver;
-/*
-    public void initialize() {
-        // if user.getUserType() != MANAGER
-
-        loginButton.setVisible(false);
-    }
-*/
 
     @FXML
     protected void onLoginButtonClick(ActionEvent event) {
@@ -66,36 +59,6 @@ public class LoginController {
         } catch (SQLException e) {
             e.printStackTrace(); // todo: workout how to handle exception with DB
         }
-        //welcomeText.setText("Welcome to JavaFX Application!");
-        /*
-        responseText.setText("Username/Password incorrect");
-
-        try {
-            Calendar id = JdbcDriverSetup.getLookup(BorrowBook.class).queryForEq("id", 1).get(0).getDate();
-
-            System.out.println(id.get(Calendar.DAY_OF_MONTH) + "/" + (id.get(Calendar.MONTH) + 1) + "/" + id.get(Calendar.YEAR));
-
-            Book book = JdbcDriverSetup.getLookup(Book.class).queryForEq("title", "Lior").get(0);
-            String id = "3333333";
-            Client client = Client.builder()
-                    .id(id)
-                    .address("safsa ")
-                    .email("a@a.c")
-                    .name("lior")
-                    .phone("22222")
-                    .build();
-            JdbcDriverSetup.getCreate(Client.class).create(client);
-            BorrowBook borrowbook = BorrowBook
-                    .builder()
-                    .client(client)
-                    .active(true)
-                    .book(book)
-                    .build();
-            JdbcDriverSetup.getCreate(BorrowBook.class).create(borrowbook);
-             }catch (SQLException e) {
-            System.err.println("error");
-            e.printStackTrace();
-            */
 
     }
 

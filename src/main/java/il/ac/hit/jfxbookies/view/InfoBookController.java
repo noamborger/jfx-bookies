@@ -68,12 +68,29 @@ public class InfoBookController {
         removeBookButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
 
         Book book = SessionContext.getInstance().getCurrentBook();
+        BorrowBook borrowBook = null;
+        try {
+            borrowBook = JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
+                    .where()
+                    .eq("book_id", book.getSku())
+                    .and()
+                    .eq("active", 1)
+                    .queryForFirst();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         skuLabel.setText(String.valueOf(book.getSku()));
         titleLabel.setText(book.getTitle());
         authorLabel.setText(book.getAuthor());
         genreLabel.setText(book.getGenre());
         locationLabel.setText(book.getLocation());
-        //isBorrowedLabel.setText(JdbcDriverSetup.getDao(BorrowBook.class).query());
+        if(borrowBook==null){
+            isBorrowedLabel.setText("In library");
+        }
+        else {
+            isBorrowedLabel.setText("Borrowed");
+            clientLabel.setText(String.valueOf(borrowBook.getClient().getId()));
+        }
 
 
     }
