@@ -55,7 +55,7 @@ public class ClientListController {
     public void initialize() {
         try {
             List<Client> c = JdbcDriverSetup.getDao(Client.class).queryForAll();
-            idCTableColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+            idCTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nameCTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             emailCTableColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
             addressCTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));

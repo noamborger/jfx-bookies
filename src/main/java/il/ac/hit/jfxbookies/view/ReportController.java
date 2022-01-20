@@ -15,11 +15,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxWeaver;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
+@FxmlView("reportPage.fxml")
 public class ReportController {
     @FXML
     private Button backButton;
@@ -36,19 +42,21 @@ public class ReportController {
     @FXML
     private TableColumn<Book, String> locationTableColumn;
 
+    @Autowired
+    private FxWeaver fxWeaver;
+
     private final ObservableList<Book> bookObservableList = FXCollections.observableArrayList();
 
-    public void initialize(){
-        System.out.println("test....");
+    public void initialize() {
         try {
-            List<Book> b = JdbcDriverSetup.getDao(Book.class).queryForAll();//inventory.showInventory();
+            List<Book> books = JdbcDriverSetup.getDao(Book.class).queryForAll();//inventory.showInventory();
 
             idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
             titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
             genreTableColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
             locationTableColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-            bookObservableList.addAll(b);
+            bookObservableList.addAll(books);
             dataTable.setItems(bookObservableList);
 
         } catch (SQLException e) {
@@ -57,16 +65,11 @@ public class ReportController {
     }
 
     public void onBackButtonClick(ActionEvent event) {
-        try {
-            Parent root= FXMLLoader.load(BooksListController.class.getResource("booksListPage.fxml"));
-            Scene booksListScene = new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(booksListScene);
-            window.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Parent root = fxWeaver.loadView(BooksListController.class);
+        Scene booksListScene = new Scene(root);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(booksListScene);
+        window.show();
     }
 
 

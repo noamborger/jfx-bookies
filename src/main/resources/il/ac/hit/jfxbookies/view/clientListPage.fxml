@@ -13,7 +13,7 @@
           <TableColumn fx:id="emailCTableColumn" prefWidth="87.33334350585938" text="Email" />
           <TableColumn fx:id="addressCTableColumn" prefWidth="93.33331298828125" text="Address" />
             <TableColumn fx:id="phoneCTableColumn" prefWidth="113.99993896484375" text="Phone" />
-            <TableColumn fx:id="borrowBooksCTableColumn" prefWidth="109.0" text="Borrow Books" />
+
         </columns>
       </TableView>
       <Label layoutX="232.0" layoutY="24.0" text="CLIENTS" textAlignment="CENTER" textFill="#59c4f0">

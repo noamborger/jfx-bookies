@@ -58,6 +58,7 @@ public class AddBookController {
             //JdbcDriverSetup.getCreate(Book.class).create(book); //Inventory.add(book);
             try {
                 inventory.add(book);
+                onBackButtonClick(event);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

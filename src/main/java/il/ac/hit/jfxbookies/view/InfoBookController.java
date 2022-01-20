@@ -5,6 +5,8 @@ import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.Inventory;
 import il.ac.hit.jfxbookies.person.Client;
 import il.ac.hit.jfxbookies.person.User;
+import il.ac.hit.jfxbookies.session.SessionContext;
+import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -59,7 +62,7 @@ public class InfoBookController {
     public void initialize() {
         removeBookButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
 
-        Book book = new Book().showBookInfo("1");
+        Book book = SessionContext.getInstance().getCurrentBook();
         skuLabel.setText(String.valueOf(book.getSku()));
         titleLabel.setText(book.getTitle());
         authorLabel.setText(book.getAuthor());
@@ -79,11 +82,8 @@ public class InfoBookController {
     }
 
     public void onBackButtonClick(ActionEvent event) {
-        Parent root = fxWeaver.loadView(BooksListController.class);
-        Scene booksListScene = new Scene(root);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(booksListScene);
-        window.show();
+        SessionContext.getInstance().setCurrentBook(null);
+        GraphicsUtils.openWindow(event, BooksListController.class);
     }
 
     public void onBorrowButtonClick(ActionEvent event) {

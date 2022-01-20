@@ -1,9 +1,13 @@
 package il.ac.hit.jfxbookies.view;
 
-import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.library.book.Book;
+import il.ac.hit.jfxbookies.library.managing.BookBorrowManager;
 import il.ac.hit.jfxbookies.library.managing.Inventory;
-import il.ac.hit.jfxbookies.person.User;
+import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.session.SessionContext;
+import il.ac.hit.jfxbookies.util.GraphicsUtils;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -13,10 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -24,7 +25,6 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -52,9 +52,14 @@ public class BooksListController {
     private TableColumn<Book, String> genreTableColumn;
     @FXML
     private TableColumn<Book, String> locationTableColumn;
+    @FXML
+    private TableColumn<Book, String> borrowedByColumn;
 
     @Autowired
     private Inventory inventory;
+
+    @Autowired
+    private BookBorrowManager bookBorrowManager;
 
     @Autowired
     private FxWeaver fxWeaver;
@@ -68,17 +73,43 @@ public class BooksListController {
     // enter the books data to the list
     public void initialize() {
 
-        newBookButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
-        reportButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
+        newBookButton.setVisible(getInstance().isCurrentUserManager());
+        reportButton.setVisible(getInstance().isCurrentUserManager());
+        dataTable.setRowFactory(tv -> {
+            TableRow<Book> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    var book = row.getItem();
+                    getInstance().setCurrentBook(book);
+                    bookObservableList.clear();
+                    GraphicsUtils.openWindow(event, InfoBookController.class);
+                }
+            });
+            return row;
+        });
 
 
         try {
             List<Book> c = inventory.getAllBooks();
+
             idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
             titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
             genreTableColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
             locationTableColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+            borrowedByColumn.setCellValueFactory(cellData -> {
+                var book = cellData.getValue();
+                try {
+                    Client activeClientForBook = bookBorrowManager.getActiveClientForBook(book.getSku());
+                    if (activeClientForBook != null) {
+                        return new ReadOnlyStringWrapper(Integer.toString(activeClientForBook.getId()));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+
             bookObservableList.addAll(c);
             dataTable.setItems(bookObservableList);
 
@@ -118,31 +149,17 @@ public class BooksListController {
 
     @FXML
     private void onClientButtonClick(ActionEvent event) {
-        Parent root = fxWeaver.loadView(ClientListController.class);
-        Scene clientListScene = new Scene(root);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(clientListScene);
-        window.show();
+        bookObservableList.clear();
+        GraphicsUtils.openWindow(event, ClientListController.class);
     }
 
     public void onNewBookButtonClick(ActionEvent event) {
-            Parent root = fxWeaver.loadView(AddBookController.class);
-            Scene addBookScene = new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(addBookScene);
-            window.show();
-            e.printStackTrace();
-        }
+        bookObservableList.clear();
+        GraphicsUtils.openWindow(event, AddBookController.class);
     }
 
     public void onReportButtonClick(ActionEvent event) {
-        try {
-            Parent root= FXMLLoader.load(ReportController.class.getResource("reportPage.fxml"));
-            Scene reportScene = new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(reportScene);
-            window.show();
-
-        } catch (IOException e) {
+        bookObservableList.clear();
+        GraphicsUtils.openWindow(event, ReportController.class);
     }
 }
