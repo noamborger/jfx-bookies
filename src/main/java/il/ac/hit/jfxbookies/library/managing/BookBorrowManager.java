@@ -65,11 +65,6 @@ public class BookBorrowManager {
         JdbcDriverSetup.getDao(BorrowBook.class).delete(borrowBookList);
     }
 
-    public void deleteBookBorrowByBook(int bookID) throws SQLException{
-        List<BorrowBook> borrowBookList = JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
-                .where()
-                .eq("book_id", bookID).query();
-        JdbcDriverSetup.getDao(BorrowBook.class).delete(borrowBookList);
-    }
+
     
 }

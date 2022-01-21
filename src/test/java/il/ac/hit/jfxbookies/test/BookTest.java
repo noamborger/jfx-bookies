@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
         JdbcConfiguration.class, Book.class, Inventory.class
 })

@@ -18,14 +18,14 @@ public class ClientManager {
         }
 
         if (phone != null) {
-            where =where.or().eq("phone", phone);
+            where =where.eq("phone", phone);
         }
         return where
                 .queryForFirst();
     }
 
 
-    //other functions
+
     public void addClient(Client client) {
         try {
             JdbcDriverSetup.getDao(Client.class).create(client);

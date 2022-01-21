@@ -78,7 +78,6 @@ public class FxApplication extends Application {
             throw new RuntimeException(e);
         }
         FxWeaver fxWeaver = springContext.getBean(FxWeaver.class);
-        /*FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loginPage.fxml"));*/
         Parent root = fxWeaver.loadView(LoginController.class);
         Scene scene = new Scene(root, 500, 400);
         stage.setTitle("Bookies");

@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -34,6 +35,8 @@ public class AddBookController {
     private TextField genreTextField;
     @FXML
     private TextField locationTextField;
+    @FXML
+    private Label errorLabel;
 
 
     @Autowired
@@ -46,12 +49,12 @@ public class AddBookController {
 
     public void onAddBookButtonClick(ActionEvent event) {
         if(titleTextField.getText().isBlank() || authorTextField.getText().isBlank() || genreTextField.getText().isBlank() || locationTextField.getText().isBlank()){
+            errorLabel.setText("Please check that you filled the information correctly");
             //if the field empty
         } else {
             Book book = new Book(titleTextField.getText(), authorTextField.getText(), genreTextField.getText(), locationTextField.getText());
             //add the information book to data
 
-            //JdbcDriverSetup.getCreate(Book.class).create(book); //Inventory.add(book);
             try {
                 inventory.add(book);
                 onBackButtonClick(event); //Move between pages
