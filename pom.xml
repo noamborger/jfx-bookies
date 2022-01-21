@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.1</junit.version>
-        <spring.boot.version>2.6.2</spring.boot.version>
+        <spring.boot.version>2.2.3.RELEASE</spring.boot.version>
         <javafx-version>17.0.0.1</javafx-version>
     </properties>
 
@@ -129,12 +129,6 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.36.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-            <version>2.9.0</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -151,7 +145,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.0.RELEASE</version>
+                <version>${spring.boot.version}</version>
             </plugin>
             <!--<plugin>
                 <groupId>org.openjfx</groupId>
