@@ -55,6 +55,12 @@ public class InfoBookController {
     private TextField clientIdPhoneField;
     @FXML
     private Button borrowButton;
+    @FXML
+    private Button returnButton;
+    @FXML
+    private Label explanationText;
+    @FXML
+    private Label clientDoesntExist;
 
     @Autowired
     private BookBorrowManager bookBorrowManager;
@@ -81,9 +87,13 @@ public class InfoBookController {
         locationLabel.setText(book.getLocation());
         if (activeClientForBook != null) {
             isBorrowedLabel.setText("Borrowed");
-            clientLabel.setText(Integer.toString(activeClientForBook.getId()));
+            clientLabel.setText(activeClientForBook.getInfo());
+            borrowButton.setVisible(false);
+            explanationText.setVisible(false);
+            clientIdPhoneField.setVisible(false);
         } else {
             isBorrowedLabel.setText("In library");
+            returnButton.setVisible(false);
         }
 
 
@@ -108,9 +118,14 @@ public class InfoBookController {
         String idPhone = clientIdPhoneField.getText();
         try {
             Client client = JdbcDriverSetup.getDao(Client.class).queryForId(idPhone);
+            if (client == null){
+                clientDoesntExist.setText("This client does not exist");
+            }
+            else {
 
-            bookBorrowManager.borrowBookByClient(SessionContext.getInstance().getCurrentBook(), client);
-            onBackButtonClick(event);
+                bookBorrowManager.borrowBookByClient(SessionContext.getInstance().getCurrentBook(), client);
+                onBackButtonClick(event);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,14 +136,28 @@ public class InfoBookController {
     }
 
     public void onReturnButtonClick(ActionEvent actionEvent) {
+        Client activeClientForBook = null;
+        Book book = null;
         try {
+            book = SessionContext.getInstance().getCurrentBook();
+            activeClientForBook = bookBorrowManager.getActiveClientForBook(book.getSku());
             BorrowBook borrowBook = JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
                     .where()
                     .eq("book_id", SessionContext.getInstance().getCurrentBook().getSku())
                     .and()
-                    .eq("client_id", clientLabel.getText())
+                    .eq("client_id", activeClientForBook.getId())
+                    .and()
+                    .eq("active", true)
                     .queryForFirst();
             bookBorrowManager.deactivateBookBorrow(borrowBook);
+            returnButton.setVisible(false);
+            borrowButton.setVisible(true);
+            explanationText.setVisible(true);
+            clientIdPhoneField.setVisible(true);
+            isBorrowedLabel.setText("In library");
+            clientLabel.setText("");
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

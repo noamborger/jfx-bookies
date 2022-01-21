@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="902.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.BooksListController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="902.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.hit.jfxbookies.view.BooksListController">
    <children>
       <Label layoutX="70.0" layoutY="60.0" text="Search Book:" />
       <TableView fx:id="dataTable" layoutX="62.0" layoutY="100.0" prefHeight="350.0" prefWidth="819.0">
@@ -20,5 +20,7 @@
       <Button id="AddBook" fx:id="newBookButton" layoutX="745.0" layoutY="14.0" mnemonicParsing="false" onAction="#onNewBookButtonClick" text="New Book" />
       <Button id="Client" fx:id="clientButton" layoutX="830.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClientButtonClick" text="Client" />
       <Button fx:id="reportButton" layoutX="676.0" layoutY="14.0" mnemonicParsing="false" onAction="#onReportButtonClick" text="Report" />
+      <Label layoutX="11.0" layoutY="8.0" text="Logged in: " />
+      <Label fx:id="userData" layoutX="80.0" layoutY="8.0" />
    </children>
 </Pane>

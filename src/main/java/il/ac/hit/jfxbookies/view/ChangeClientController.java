@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 @Component
 @FxmlView ("changeClientPage.fxml")
@@ -28,6 +29,8 @@ public class ChangeClientController {
     private TextField changeAddressTextField;
     @FXML
     private TextField changePhoneTextField;
+    @FXML
+    private Label informationLabel;
 
     @Autowired
     private ClientManager clientManager;
@@ -66,17 +69,25 @@ public class ChangeClientController {
 
 
     public void onSaveChangesButtonClick (ActionEvent event){
-
-        Client client= SessionContext.getInstance().getCurrentClient();
-        client.setName(changeNameTextField.getText());
-        client.setAddress(changeAddressTextField.getText());
-        client.setEmail(changeEmailTextField.getText());
-        client.setPhone(changePhoneTextField.getText());
-        try {
-            clientManager.updateClient(client);
-            GraphicsUtils.openWindow(event, ClientListController.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        Pattern phonePtrn = Pattern.compile("(05)[0-9]");  //phone number starting with 05
+        //if the field empty or phone number starting with 05
+        if(changePhoneTextField.getText().matches(phonePtrn.pattern()) || changePhoneTextField.getText().isBlank()
+        || changeAddressTextField.getText().isBlank() || changeEmailTextField.getText().isBlank()
+        || changeNameTextField.getText().isBlank()) {
+            informationLabel.setText("Please check that you filled the information correctly");
+        }
+        else{
+            Client client = SessionContext.getInstance().getCurrentClient();
+            client.setName(changeNameTextField.getText());
+            client.setAddress(changeAddressTextField.getText());
+            client.setEmail(changeEmailTextField.getText());
+            client.setPhone(changePhoneTextField.getText());
+            try {
+                clientManager.updateClient(client);
+                GraphicsUtils.openWindow(event, ClientListController.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
 

@@ -14,7 +14,7 @@
             <TableColumn fx:id="authorTableColumn" prefWidth="86.0" text="Author" />
             <TableColumn fx:id="genreTableColumn" prefWidth="72.66665649414062" text="Genre" />
             <TableColumn fx:id="locationTableColumn" prefWidth="61.666656494140625" text="Location" />
-            <TableColumn prefWidth="148.33331298828125" text="Borrowed By (client ID)" />
+            <TableColumn fx:id="borrowByTableColumn" prefWidth="148.33331298828125" text="Borrowed By (client ID)" />
         </columns>
       </TableView>
       <Label layoutX="242.0" layoutY="8.0" text="Report" textFill="#59c4f0">

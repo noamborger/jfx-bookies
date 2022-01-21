@@ -5,6 +5,7 @@ import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.BookBorrowManager;
 import il.ac.hit.jfxbookies.library.managing.Inventory;
 import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.person.User;
 import il.ac.hit.jfxbookies.session.SessionContext;
 import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -39,6 +40,8 @@ public class BooksListController {
     private TextField searchBookField;
     @FXML
     private Button reportButton;
+    @FXML
+    private Label userData;
 
     @FXML
     private TableView<Book> dataTable;
@@ -64,6 +67,9 @@ public class BooksListController {
     @Autowired
     private FxWeaver fxWeaver;
 
+    /*@Autowired
+    private User;*/
+
     private final ObservableList<Book> bookObservableList = FXCollections.observableArrayList();
 
     public BooksListController() {
@@ -72,7 +78,7 @@ public class BooksListController {
 
     // enter the books data to the list
     public void initialize() {
-
+        userData.setText(getInstance().getCurrentUser().toString());
         newBookButton.setVisible(getInstance().isCurrentUserManager());
         reportButton.setVisible(getInstance().isCurrentUserManager());
         dataTable.setRowFactory(tv -> {

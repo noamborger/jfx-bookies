@@ -23,7 +23,6 @@
       </Label>
       <Button id="Back" fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="&lt;-" />
       <Button id="AddClient" fx:id="addClientButton" layoutX="492.0" layoutY="31.0" mnemonicParsing="false" onAction="#onAddClientButtonClient" prefHeight="25.0" prefWidth="90.0" text="Add Client" />
-      <Button id="ChangeClient" fx:id="changeClientButton" layoutX="490.0" layoutY="69.0" mnemonicParsing="false" onAction="#onChangeClientButtonClick" text="Change Client" />
       <Label layoutX="43.0" layoutY="94.0" text="Search Client:" />
       <TextField fx:id="searchClientField" layoutX="122.0" layoutY="90.0" prefHeight="25.0" prefWidth="337.0" />
    </children>

@@ -5,7 +5,9 @@ import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.BookBorrowManager;
 import il.ac.hit.jfxbookies.library.managing.BorrowBook;
 import il.ac.hit.jfxbookies.library.managing.Inventory;
+import il.ac.hit.jfxbookies.person.Client;
 import il.ac.hit.jfxbookies.util.GraphicsUtils;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,6 +43,8 @@ public class ReportController {
     @FXML
     private TableColumn<Book, String> locationTableColumn;
     @FXML
+    private TableColumn<Book, String> borrowByTableColumn;
+    @FXML
     private Label numberOfBorrowedBooksLabel;
     @FXML
     private Label numberOfBooksLabel;
@@ -63,6 +67,19 @@ public class ReportController {
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
             genreTableColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
             locationTableColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+            borrowByTableColumn.setCellValueFactory(cellData ->{
+                var book = cellData.getValue();
+
+                try {
+                    Client activeClientForBook = bookBorrowManager.getActiveClientForBook(book.getSku());
+                    if (activeClientForBook != null) {
+                        return new ReadOnlyStringWrapper(Integer.toString(activeClientForBook.getId()));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
             bookObservableList.addAll(books);
             dataTable.setItems(bookObservableList);
 

@@ -6,17 +6,17 @@ import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.util.regex.*;
 
 @Component
 @FxmlView("addClientPage.fxml")
 public class AddClientController {
-
-    private Button backButton;
 
     @FXML
     private TextField nameTextField;
@@ -26,13 +26,15 @@ public class AddClientController {
     private TextField phoneTextField;
     @FXML
     private TextField addressTextField;
+    @FXML
+    private Label responseTextFalseInformation;
 
     @Autowired
     private FxWeaver fxWeaver;
 
     @Autowired
     private ClientManager clientManager;
-
+    //Move between pages
     public void onBackButtonClick(ActionEvent event) {
         GraphicsUtils.openWindow(event, ClientListController.class);
     }
@@ -40,7 +42,11 @@ public class AddClientController {
 
     public void onAddClientButtonClick(ActionEvent event) {
 
-        if (nameTextField.getText().isBlank() || emailTextField.getText().isBlank() || phoneTextField.getText().isBlank() || addressTextField.getText().isBlank()) {
+        Pattern phonePtrn = Pattern.compile("(05)[0-9]");  //phone number starting with 05
+        //if the field empty or phone number starting with 05
+        if (nameTextField.getText().isBlank() || emailTextField.getText().isBlank() || phoneTextField.getText().isBlank() ||
+                addressTextField.getText().isBlank() || phoneTextField.getText().matches(phonePtrn.pattern())) {
+            responseTextFalseInformation.setText("Please check that you filled the information correctly");
 
         } else {
             Client client = Client
@@ -51,8 +57,8 @@ public class AddClientController {
                     .address(addressTextField.getText())
                     .build();
             clientManager.addClient(client);
+            onBackButtonClick(event); //Move between pages
         }
-        onBackButtonClick(event);
 
 
     }

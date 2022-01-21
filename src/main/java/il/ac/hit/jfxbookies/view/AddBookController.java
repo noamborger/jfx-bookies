@@ -36,26 +36,27 @@ public class AddBookController {
     private TextField locationTextField;
 
     @Autowired
-    private FxWeaver fxWeaver;
+    private FxWeaver fxWeaver;   //+
 
     @Autowired
     private Inventory inventory;
 
-
+    //Move between pages
     public void onBackButtonClick(ActionEvent event) {
         GraphicsUtils.openWindow(event, BooksListController.class);
     }
 
     public void onAddBookButtonClick(ActionEvent event) {
         if(titleTextField.getText().isBlank() || authorTextField.getText().isBlank() || genreTextField.getText().isBlank() || locationTextField.getText().isBlank()){
-
+            //if the field empty
         } else {
             Book book = new Book(titleTextField.getText(), authorTextField.getText(), genreTextField.getText(), locationTextField.getText());
+            //add the information book to data
 
             //JdbcDriverSetup.getCreate(Book.class).create(book); //Inventory.add(book);
             try {
                 inventory.add(book);
-                onBackButtonClick(event);
+                onBackButtonClick(event); //Move between pages
             } catch (SQLException e) {
                 e.printStackTrace();
             }
