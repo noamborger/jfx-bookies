@@ -60,7 +60,6 @@ public class InfoBookController {
     private BookBorrowManager bookBorrowManager;
 
 
-
     @Autowired
     private FxWeaver fxWeaver;
 
@@ -68,28 +67,23 @@ public class InfoBookController {
         removeBookButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
 
         Book book = SessionContext.getInstance().getCurrentBook();
-        BorrowBook borrowBook = null;
+        Client activeClientForBook = null;
         try {
-            borrowBook = JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
-                    .where()
-                    .eq("book_id", book.getSku())
-                    .and()
-                    .eq("active", 1)
-                    .queryForFirst();
+            activeClientForBook = bookBorrowManager.getActiveClientForBook(book.getSku());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         skuLabel.setText(String.valueOf(book.getSku()));
         titleLabel.setText(book.getTitle());
         authorLabel.setText(book.getAuthor());
         genreLabel.setText(book.getGenre());
         locationLabel.setText(book.getLocation());
-        if(borrowBook==null){
-            isBorrowedLabel.setText("In library");
-        }
-        else {
+        if (activeClientForBook != null) {
             isBorrowedLabel.setText("Borrowed");
-            clientLabel.setText(String.valueOf(borrowBook.getClient().getId()));
+            clientLabel.setText(Integer.toString(activeClientForBook.getId()));
+        } else {
+            isBorrowedLabel.setText("In library");
         }
 
 
@@ -116,15 +110,17 @@ public class InfoBookController {
             Client client = JdbcDriverSetup.getDao(Client.class).queryForId(idPhone);
 
             bookBorrowManager.borrowBookByClient(SessionContext.getInstance().getCurrentBook(), client);
+            onBackButtonClick(event);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 
+
     }
 
-    public void onReturnButtonClick (ActionEvent actionEvent) {
+    public void onReturnButtonClick(ActionEvent actionEvent) {
         try {
             BorrowBook borrowBook = JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
                     .where()

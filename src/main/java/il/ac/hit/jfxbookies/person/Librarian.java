@@ -12,7 +12,7 @@ public class Librarian extends AbstractPerson{
     }
 
     @Override
-    public AbstractPerson printInfo(int id) {
-        return null;
+    public String getInfo() {
+        return this.toString();
     }
 }

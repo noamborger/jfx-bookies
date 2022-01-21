@@ -20,7 +20,7 @@ public abstract class AbstractPerson {
         this.name = name;
     }
 
-    public abstract AbstractPerson printInfo(int id);
+    public abstract String getInfo();
 
 }
 

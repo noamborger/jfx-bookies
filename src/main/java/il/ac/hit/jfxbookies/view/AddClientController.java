@@ -1,25 +1,16 @@
 package il.ac.hit.jfxbookies.view;
 
-import il.ac.hit.jfxbookies.library.book.Book;
-import il.ac.hit.jfxbookies.library.managing.Inventory;
 import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.person.managing.ClientManager;
 import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 @Component
 @FxmlView("addClientPage.fxml")
@@ -39,6 +30,9 @@ public class AddClientController {
     @Autowired
     private FxWeaver fxWeaver;
 
+    @Autowired
+    private ClientManager clientManager;
+
     public void onBackButtonClick(ActionEvent event) {
         GraphicsUtils.openWindow(event, ClientListController.class);
     }
@@ -46,7 +40,7 @@ public class AddClientController {
 
     public void onAddClientButtonClick(ActionEvent event) {
 
-        if (nameTextField.getText().isBlank() | emailTextField.getText().isBlank() | phoneTextField.getText().isBlank() | addressTextField.getText().isBlank()) {
+        if (nameTextField.getText().isBlank() || emailTextField.getText().isBlank() || phoneTextField.getText().isBlank() || addressTextField.getText().isBlank()) {
 
         } else {
             Client client = Client
@@ -56,7 +50,7 @@ public class AddClientController {
                     .phone(phoneTextField.getText())
                     .address(addressTextField.getText())
                     .build();
-            client.addClient();
+            clientManager.addClient(client);
         }
         onBackButtonClick(event);
 

@@ -2,6 +2,7 @@ package il.ac.hit.jfxbookies;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import il.ac.hit.jfxbookies.library.book.Book;
 import il.ac.hit.jfxbookies.library.managing.BorrowBook;
@@ -45,14 +46,11 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        var connectionSource = springContext.getBean(ConnectionSource.class);
         try {
-            TableUtils.createTableIfNotExists(JdbcDriverSetup.getConnection(), Client.class);
-            TableUtils.createTableIfNotExists(JdbcDriverSetup.getConnection(), Book.class);
-            TableUtils.createTableIfNotExists(JdbcDriverSetup.getConnection(), BorrowBook.class);
-            JdbcDriverSetup.createDao(Book.class);
-            JdbcDriverSetup.createDao(Client.class);
-            JdbcDriverSetup.createDao(BorrowBook.class);
-            JdbcDriverSetup.createDao(User.class);
+            TableUtils.createTableIfNotExists(connectionSource, Client.class);
+            TableUtils.createTableIfNotExists(connectionSource, Book.class);
+            TableUtils.createTableIfNotExists(connectionSource, BorrowBook.class);
         } catch (SQLException e) {
             throw new IOException("could not create tables", e);
         }
@@ -67,7 +65,7 @@ public class HelloApplication extends Application {
 
             */
             try {
-                TableUtils.createTable(JdbcDriverSetup.getConnection(), User.class);
+                TableUtils.createTable(connectionSource, User.class);
                 tableAlreadyCreated = false;
             } catch (SQLException e) {
                 tableAlreadyCreated = JdbcDriverSetup.getDao(User.class).queryForFirst() != null;
@@ -82,7 +80,7 @@ public class HelloApplication extends Application {
             }
         } catch (Exception e) {
             try {
-                TableUtils.dropTable(JdbcDriverSetup.getConnection(), User.class, true);
+                TableUtils.dropTable(connectionSource, User.class, true);
             } catch (SQLException ignore) {
             }
             throw new RuntimeException(e);
