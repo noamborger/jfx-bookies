@@ -36,8 +36,7 @@ public class Book {
 
     }
 
-    // Set functions
-    //Other functions
+    // taking data of book from DB
     public Book showBookInfo(String sku){
         try {
             return JdbcDriverSetup.getDao(Book.class).queryForId(sku);

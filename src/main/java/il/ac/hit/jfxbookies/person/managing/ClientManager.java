@@ -1,7 +1,7 @@
 package il.ac.hit.jfxbookies.person.managing;
 
+import com.j256.ormlite.stmt.Where;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
-import il.ac.hit.jfxbookies.person.AbstractPerson;
 import il.ac.hit.jfxbookies.person.Client;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +9,18 @@ import java.sql.SQLException;
 
 @Service
 public class ClientManager {
-    public Client getClientById(int id) throws SQLException {
-        return JdbcDriverSetup.getDao(Client.class)
+    public Client getClientByIdOrPhone(Integer id, String phone) throws SQLException {
+        Where<Client, Object> where = JdbcDriverSetup.getDao(Client.class)
                 .queryBuilder()
-                .where()
-                .eq("id", id)
-                .or()
-                .eq("phone", id)
+                .where();
+        if (id != null) {
+            where = where.eq("id", id);
+        }
+
+        if (phone != null) {
+            where =where.or().eq("phone", phone);
+        }
+        return where
                 .queryForFirst();
     }
 

@@ -35,8 +35,6 @@ public class AddBookController {
     @FXML
     private TextField locationTextField;
 
-    @Autowired
-    private FxWeaver fxWeaver;   //+
 
     @Autowired
     private Inventory inventory;

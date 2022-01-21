@@ -62,6 +62,7 @@ public class ReportController {
         try {
             List<Book> books = JdbcDriverSetup.getDao(Book.class).queryForAll();//inventory.showInventory();
 
+            //show the data on table view
             idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
             titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -83,14 +84,15 @@ public class ReportController {
             bookObservableList.addAll(books);
             dataTable.setItems(bookObservableList);
 
-            numberOfBooksLabel.setText(String.valueOf(inventory.getBooksCount()));
-            numberOfBorrowedBooksLabel.setText(String.valueOf(bookBorrowManager.getActiveBookBorrowsSize()));
+            numberOfBooksLabel.setText(String.valueOf(inventory.getBooksCount()));    //number of books
+            numberOfBorrowedBooksLabel.setText(String.valueOf(bookBorrowManager.getActiveBookBorrowsSize()));  //number of borrowed books
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    //Move between pages
     public void onBackButtonClick(ActionEvent event) {
         bookObservableList.clear();
         GraphicsUtils.openWindow(event, BooksListController.class);

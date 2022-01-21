@@ -18,6 +18,7 @@ public final class GraphicsUtils {
         GraphicsUtils.fxWeaver = fxWeaver;
     }
 
+    //Move between pages
     public static <T> void openWindow(Event event, Class<T> controllerClass) {
         Parent root = fxWeaver.loadView(controllerClass);
         Scene booksListScene = new Scene(root);

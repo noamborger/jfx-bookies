@@ -70,8 +70,10 @@ public class InfoBookController {
     private FxWeaver fxWeaver;
 
     public void initialize() {
+        //Permissions for only manager on button
         removeBookButton.setVisible(User.UserType.LIBRARIAN != getInstance().getCurrentUser().getUserType());
 
+        //if the book is borrowed
         Book book = SessionContext.getInstance().getCurrentBook();
         Client activeClientForBook = null;
         try {
@@ -80,12 +82,13 @@ public class InfoBookController {
             e.printStackTrace();
         }
 
+        //show the specific book data
         skuLabel.setText(String.valueOf(book.getSku()));
         titleLabel.setText(book.getTitle());
         authorLabel.setText(book.getAuthor());
         genreLabel.setText(book.getGenre());
         locationLabel.setText(book.getLocation());
-        if (activeClientForBook != null) {
+        if (activeClientForBook != null) {     //borrowed book
             isBorrowedLabel.setText("Borrowed");
             clientLabel.setText(activeClientForBook.getInfo());
             borrowButton.setVisible(false);
@@ -99,6 +102,7 @@ public class InfoBookController {
 
     }
 
+    //delete book
     public void onRemoveBookButtonClick(ActionEvent event) {
         Inventory inventory = new Inventory();
         try {
@@ -110,7 +114,7 @@ public class InfoBookController {
 
     public void onBackButtonClick(ActionEvent event) {
         SessionContext.getInstance().setCurrentBook(null);
-        GraphicsUtils.openWindow(event, BooksListController.class);
+        GraphicsUtils.openWindow(event, BooksListController.class);//Move between pages
     }
 
     public void onBorrowButtonClick(ActionEvent event) {

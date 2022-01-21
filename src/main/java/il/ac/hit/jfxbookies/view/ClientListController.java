@@ -52,15 +52,16 @@ public class ClientListController {
     @FXML
     private TableColumn<Client, String> phoneCTableColumn;
 
-    @Autowired
-    private FxWeaver fxWeaver;
+
 
     private final ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
 
     public void initialize() {
 
+        //push double click on row and open new scene
         dataTable.setRowFactory(tv ->{
             TableRow<Client> row = new TableRow<>();
+
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     var client = row.getItem();
@@ -73,6 +74,7 @@ public class ClientListController {
         });
 
         try {
+            //show the data on table view
             List<Client> c = JdbcDriverSetup.getDao(Client.class).queryForAll();
             idCTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nameCTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -82,10 +84,12 @@ public class ClientListController {
             clientObservableList.addAll(c);
             dataTable.setItems(clientObservableList);
 
+            //search on data table
             FilteredList<Client> filteredData = new FilteredList<>(clientObservableList, client -> true);
 
             searchClientField.textProperty().addListener((observable, oldValue, newValue) -> {
                 filteredData.setPredicate(client -> {
+                    //if no search value then display all records or what ever records it current have. no change
                     if (newValue.isBlank() || newValue.isEmpty() || newValue==null){
                         return true;
                     }
@@ -114,17 +118,15 @@ public class ClientListController {
     }
 
     public void onAddClientButtonClient(ActionEvent event) {
-        clientObservableList.clear();
-        GraphicsUtils.openWindow(event, AddClientController.class);
+        clientObservableList.clear();   //That there will be no duplicates in data table
+        GraphicsUtils.openWindow(event, AddClientController.class);//Move between pages
     }
 
 
     public void onBackButtonClick(ActionEvent event) {
-        clientObservableList.clear();
-        GraphicsUtils.openWindow(event, BooksListController.class);
+        clientObservableList.clear();   //That there will be no duplicates in data table
+        GraphicsUtils.openWindow(event, BooksListController.class);//Move between pages
     }
 
-    public void onChangeClientButtonClick(ActionEvent event) {
 
-    }
 }

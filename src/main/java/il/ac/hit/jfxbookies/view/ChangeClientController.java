@@ -2,6 +2,7 @@ package il.ac.hit.jfxbookies.view;
 
 import il.ac.hit.jfxbookies.library.managing.BookBorrowManager;
 import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.person.managing.ClientUtils;
 import il.ac.hit.jfxbookies.person.managing.ClientManager;
 import il.ac.hit.jfxbookies.session.SessionContext;
 import il.ac.hit.jfxbookies.util.GraphicsUtils;
@@ -14,10 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
-import java.util.regex.Pattern;
 
 @Component
-@FxmlView ("changeClientPage.fxml")
+@FxmlView("changeClientPage.fxml")
 public class ChangeClientController {
     @FXML
     private Label idLabel;
@@ -37,8 +37,9 @@ public class ChangeClientController {
     @Autowired
     private BookBorrowManager bookBorrow;
 
-    public void initialize(){
-        Client client= SessionContext.getInstance().getCurrentClient();
+    public void initialize() {
+        //loaded the data on specific client
+        Client client = SessionContext.getInstance().getCurrentClient();
         idLabel.setText(String.valueOf(client.getId()));
         changeNameTextField.setText(client.getName());
         changeEmailTextField.setText(client.getEmail());
@@ -47,19 +48,18 @@ public class ChangeClientController {
     }
 
 
-
-
-
+    //Move between pages
     public void onBackButtonClick(ActionEvent event) {
         GraphicsUtils.openWindow(event, ClientListController.class);
     }
 
+    //delete client
     public void onRemoveClientButtonClick(ActionEvent event) {
 
         try {
             clientManager.deleteClient(String.valueOf(Integer.parseInt(idLabel.getText())));
             bookBorrow.deleteBookBorrowByClient(Integer.parseInt(idLabel.getText()));
-            GraphicsUtils.openWindow(event, ClientListController.class);
+            GraphicsUtils.openWindow(event, ClientListController.class);  //Move between pages
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,26 +68,24 @@ public class ChangeClientController {
     }
 
 
-    public void onSaveChangesButtonClick (ActionEvent event){
-        Pattern phonePtrn = Pattern.compile("(05)[0-9]");  //phone number starting with 05
-        //if the field empty or phone number starting with 05
-        if(changePhoneTextField.getText().matches(phonePtrn.pattern()) || changePhoneTextField.getText().isBlank()
-        || changeAddressTextField.getText().isBlank() || changeEmailTextField.getText().isBlank()
-        || changeNameTextField.getText().isBlank()) {
-            informationLabel.setText("Please check that you filled the information correctly");
-        }
-        else{
-            Client client = SessionContext.getInstance().getCurrentClient();
-            client.setName(changeNameTextField.getText());
-            client.setAddress(changeAddressTextField.getText());
-            client.setEmail(changeEmailTextField.getText());
-            client.setPhone(changePhoneTextField.getText());
-            try {
+    public void onSaveChangesButtonClick(ActionEvent event) {
+        try {
+            //if the field empty or phone number starting with 0 and end with number
+            if (ClientUtils.isClientInputNotOkay(changePhoneTextField, changeNameTextField, changeEmailTextField, changeAddressTextField)) {
+                informationLabel.setText("Please check that you filled the information correctly");
+            } else {      //push the new(change) data
+                Client client = SessionContext.getInstance().getCurrentClient();
+                client.setName(changeNameTextField.getText());
+                client.setAddress(changeAddressTextField.getText());
+                client.setEmail(changeEmailTextField.getText());
+                client.setPhone(changePhoneTextField.getText());
+
                 clientManager.updateClient(client);
-                GraphicsUtils.openWindow(event, ClientListController.class);
-            } catch (SQLException e) {
-                e.printStackTrace();
+                GraphicsUtils.openWindow(event, ClientListController.class);//Move between pages
+
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
 

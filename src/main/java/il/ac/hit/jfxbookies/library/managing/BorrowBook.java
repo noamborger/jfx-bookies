@@ -40,7 +40,7 @@ public class BorrowBook {
         this.client = client;
     }
 
-    //get functions
+
     public Calendar getDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);
@@ -51,15 +51,5 @@ public class BorrowBook {
         return client;
     }
 
-    //other functions
-    public void lendBook(Book book, Client client) {
-
-
-
-    }
-
-    public void returnBook(Book book, Client client) {
-
-    }
 
 }

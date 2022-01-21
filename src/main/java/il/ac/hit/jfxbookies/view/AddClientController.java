@@ -1,18 +1,19 @@
 package il.ac.hit.jfxbookies.view;
 
 import il.ac.hit.jfxbookies.person.Client;
+import il.ac.hit.jfxbookies.person.managing.ClientUtils;
 import il.ac.hit.jfxbookies.person.managing.ClientManager;
 import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.regex.*;
+
+import java.sql.SQLException;
 
 @Component
 @FxmlView("addClientPage.fxml")
@@ -34,6 +35,7 @@ public class AddClientController {
 
     @Autowired
     private ClientManager clientManager;
+
     //Move between pages
     public void onBackButtonClick(ActionEvent event) {
         GraphicsUtils.openWindow(event, ClientListController.class);
@@ -41,25 +43,27 @@ public class AddClientController {
 
 
     public void onAddClientButtonClick(ActionEvent event) {
-
-        Pattern phonePtrn = Pattern.compile("(05)[0-9]");  //phone number starting with 05
-        //if the field empty or phone number starting with 05
-        if (nameTextField.getText().isBlank() || emailTextField.getText().isBlank() || phoneTextField.getText().isBlank() ||
-                addressTextField.getText().isBlank() || phoneTextField.getText().matches(phonePtrn.pattern())) {
-            responseTextFalseInformation.setText("Please check that you filled the information correctly");
-
-        } else {
-            Client client = Client
-                    .builder()
-                    .name(nameTextField.getText())
-                    .email(emailTextField.getText())
-                    .phone(phoneTextField.getText())
-                    .address(addressTextField.getText())
-                    .build();
-            clientManager.addClient(client);
-            onBackButtonClick(event); //Move between pages
+        //if the field empty or phone number starting with 0
+        try {
+            if (ClientUtils.isClientInputNotOkay(phoneTextField, nameTextField, emailTextField, addressTextField)) {
+                responseTextFalseInformation.setText("Please check that you filled the information correctly");
+            } else {      //add the information client to data
+                Client client = Client
+                        .builder()
+                        .name(nameTextField.getText())
+                        .email(emailTextField.getText())
+                        .phone(phoneTextField.getText())
+                        .address(addressTextField.getText())
+                        .build();
+                clientManager.addClient(client);
+                onBackButtonClick(event); //Move between pages
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
 
     }
+
+
 }

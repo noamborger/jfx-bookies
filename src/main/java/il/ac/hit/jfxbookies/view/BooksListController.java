@@ -67,8 +67,7 @@ public class BooksListController {
     @Autowired
     private FxWeaver fxWeaver;
 
-    /*@Autowired
-    private User;*/
+
 
     private final ObservableList<Book> bookObservableList = FXCollections.observableArrayList();
 
@@ -81,7 +80,7 @@ public class BooksListController {
         userData.setText(getInstance().getCurrentUser().toString());
         newBookButton.setVisible(getInstance().isCurrentUserManager());
         reportButton.setVisible(getInstance().isCurrentUserManager());
-        dataTable.setRowFactory(tv -> {
+        dataTable.setRowFactory(tv -> {          //push double click on row and open new scene
             TableRow<Book> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
@@ -97,7 +96,7 @@ public class BooksListController {
 
         try {
             List<Book> c = inventory.getAllBooks();
-
+            //show the data on table view
             idTableColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
             titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
             authorTableColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -118,7 +117,7 @@ public class BooksListController {
 
             bookObservableList.addAll(c);
             dataTable.setItems(bookObservableList);
-
+            //search on data table
             FilteredList<Book> filteredData = new FilteredList<>(bookObservableList, book -> true);
 
             searchBookField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
@@ -155,17 +154,17 @@ public class BooksListController {
 
     @FXML
     private void onClientButtonClick(ActionEvent event) {
-        bookObservableList.clear();
-        GraphicsUtils.openWindow(event, ClientListController.class);
+        bookObservableList.clear();   //That there will be no duplicates in data table
+        GraphicsUtils.openWindow(event, ClientListController.class); //Move between pages
     }
 
     public void onNewBookButtonClick(ActionEvent event) {
-        bookObservableList.clear();
-        GraphicsUtils.openWindow(event, AddBookController.class);
+        bookObservableList.clear();   //That there will be no duplicates in data table
+        GraphicsUtils.openWindow(event, AddBookController.class);//Move between pages
     }
 
     public void onReportButtonClick(ActionEvent event) {
-        bookObservableList.clear();
-        GraphicsUtils.openWindow(event, ReportController.class);
+        bookObservableList.clear();//That there will be no duplicates in data table
+        GraphicsUtils.openWindow(event, ReportController.class);//Move between pages
     }
 }

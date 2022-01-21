@@ -7,7 +7,7 @@ import il.ac.hit.jfxbookies.person.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+//setup users(librarian and manager)
 @Builder
 @NoArgsConstructor
 @Data
@@ -18,7 +18,7 @@ public class Setup {
     private String librarianPassword;
     private String librarian2User;
     private String librarian2Password;
-/*this code will help to read the setup.jason file*/
+//this code will help to read the setup.jason file
     @JsonCreator
     public Setup(@JsonProperty("managerUser") String managerUser,
                  @JsonProperty("managerPassword") String managerPassword,

@@ -15,7 +15,7 @@ public class Client extends AbstractPerson {
     private String phone;
     @DatabaseField
     private String address;
-    @DatabaseField(unique = true)
+    @DatabaseField
     private String email;
 
 

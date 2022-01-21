@@ -3,6 +3,7 @@ package il.ac.hit.jfxbookies.view;
 import il.ac.hit.jfxbookies.JdbcDriverSetup;
 import il.ac.hit.jfxbookies.person.User;
 import il.ac.hit.jfxbookies.session.SessionContext;
+import il.ac.hit.jfxbookies.util.GraphicsUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,16 +63,9 @@ public class LoginController {
 
     }
 
+    //Move between pages
     private void onSuccessfulLogin(ActionEvent event){
-    /*Parent root = FXMLLoader.load(getClass().getResource("booksListPage.fxml"));
-    Stage window = (Stage) Login.getScene().getWindow();
-    window.setScene(new Scene(root));*/
-            //change the scene to the
-            Parent root = fxWeaver.loadView(BooksListController.class);
-            Scene booksListScene = new Scene(root);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(booksListScene);
-            window.show();
+        GraphicsUtils.openWindow(event, BooksListController.class);
     }
 
 

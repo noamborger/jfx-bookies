@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.util.List;
 
+//taking data of borrowed book from DB
 @Service
 @Slf4j
 public class BookBorrowManager {
@@ -28,6 +29,7 @@ public class BookBorrowManager {
         }
     }
 
+    //taking data of how much borrowed book we have from DB
     public long getActiveBookBorrowsSize() throws SQLException {
         return JdbcDriverSetup.getDao(BorrowBook.class)
                 .queryBuilder()
@@ -36,6 +38,7 @@ public class BookBorrowManager {
                 .countOf();
     }
 
+    //build the data of borrow book
     public BorrowBook borrowBookByClient(Book book, Client client) throws SQLException {
         var borrow = BorrowBook
                 .builder()
@@ -47,12 +50,14 @@ public class BookBorrowManager {
         return borrow;
     }
 
+    //return book
     public void deactivateBookBorrow(BorrowBook borrowBook) throws SQLException {
         borrowBook.setActive(false);
         JdbcDriverSetup.getDao(BorrowBook.class)
                 .update(borrowBook);
     }
 
+    //delete from data
     public void deleteBookBorrowByClient(int clientID) throws SQLException{
         List<BorrowBook> borrowBookList = JdbcDriverSetup.getDao(BorrowBook.class).queryBuilder()
                         .where()

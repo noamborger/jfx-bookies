@@ -11,13 +11,11 @@ import il.ac.hit.jfxbookies.person.User;
 import il.ac.hit.jfxbookies.startup.Setup;
 import il.ac.hit.jfxbookies.view.LoginController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -27,7 +25,7 @@ import java.sql.SQLException;
 
 
 //@SpringBootApplication(scanBasePackages = "il.ac.hit.jfxbookies.*")
-public class HelloApplication extends Application {
+public class FxApplication extends Application {
     private ConfigurableApplicationContext springContext;
 
     @Override
@@ -47,15 +45,9 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         var connectionSource = springContext.getBean(ConnectionSource.class);
+        JdbcDriverSetup.initTables();
         try {
-            TableUtils.createTableIfNotExists(connectionSource, Client.class);
-            TableUtils.createTableIfNotExists(connectionSource, Book.class);
-            TableUtils.createTableIfNotExists(connectionSource, BorrowBook.class);
-        } catch (SQLException e) {
-            throw new IOException("could not create tables", e);
-        }
-        try {
-            boolean tableAlreadyCreated = true;
+            boolean tableAlreadyCreated;
             /*
             if the table was not created, it will change the tableAlreadyCreated to false
             which then it will enter the if and will create the table.
